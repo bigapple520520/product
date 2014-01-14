@@ -14,12 +14,11 @@ import android.util.Log;
  * @version $Revision: 1.0 $, $Date: 2014-1-13 下午8:03:29 $
  */
 public class TileView {
-    int[][] tile = new int[4][4];
-    Random rand = null;
-    int color = 1;
-    int shape = 0;
-    int offsetX = (Court.COURT_WIDTH - 4) / 2 + 1;
-    int offsetY = 0;
+    private final int[][] tile = new int[4][4];
+    private int color = 1;
+    private int shape = 0;
+    private int offsetX = (Court.COURT_WIDTH - 4) / 2 + 1;
+    private int offsetY = 0;
 
     private ResourceStore resourceStore = null;
 
@@ -29,13 +28,9 @@ public class TileView {
     }
 
     private void init() {
-        rand = new Random();
+        Random rand = new Random();
         shape = Math.abs(rand.nextInt() % 28);
         color = Math.abs(rand.nextInt() % 8) + 1;
-
-        if (null == tile) {
-            return;
-        }
 
         int i, j;
         for (i = 0; i < 4; i++) {
@@ -57,6 +52,7 @@ public class TileView {
         else {
             tempShape += 3;
         }
+
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 tempTile[i][j] = TileStore.store[tempShape][i][j];

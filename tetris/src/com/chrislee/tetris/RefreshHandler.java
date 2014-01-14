@@ -3,6 +3,12 @@ package com.chrislee.tetris;
 import android.os.Handler;
 import android.os.Message;
 
+/**
+ * 刷新处理
+ * 
+ * @author xuan
+ * @version $Revision: 1.0 $, $Date: 2014-1-14 下午6:34:26 $
+ */
 public class RefreshHandler extends Handler {
     final static int MESSAGE_REFRESH = 0xeeeeeeee;
 
@@ -15,9 +21,9 @@ public class RefreshHandler extends Handler {
         this.tetrisView = tetrisView;
     }
 
-    public void handleMessage(Message ms) {
+    public void handleMessage(Message message) {
         if (!isPaused) {
-            if (ms.what == MESSAGE_REFRESH) {
+            if (message.what == MESSAGE_REFRESH) {
                 tetrisView.logic();
                 tetrisView.invalidate();
             }

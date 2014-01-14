@@ -30,47 +30,47 @@ public class TetrisView extends View implements Runnable {
 
     int gamestate = STATE_PLAY;
 
-    int mScore = 0;
-    int mSpeed = 1;
-    int mDeLine = 0;
+    int score = 0;
+    int speed = 1;
+    int deLine = 0;
 
-    boolean mIsCombo = false;
-    boolean mIsPaused = false;
-    boolean mIsVoice = true;
+    boolean isCombo = false;
+    boolean isPaused = false;
+    boolean isVoice = true;
 
-    long mMoveDelay = 600;
-    long mLastMove = 0;
+    long moveDelay = 600;
+    long lastMove = 0;
 
-    private Context context = null;
-    private final Paint mPaint = new Paint();
+    private final Paint paint = new Paint();
 
-    RefreshHandler mRefreshHandler = null;
+    RefreshHandler refreshHandler = null;
 
-    TileView mCurrentTile = null;
-    TileView mNextTile = null;
-    Court mCourt = null;
-    ResourceStore mResourceStore = null;
+    TileView currentTile = null;
+    TileView nextTile = null;
+    Court court = null;
+    ResourceStore resourceStore = null;
 
-    MusicPlayer mMPlayer = null;
+    MusicPlayer musicPlayer = null;
 
     public TetrisView(Context context) {
         super(context);
+        init();
+    }
 
-        this.context = context;
-        mCurrentTile = new TileView(context);
+    private void init() {
+        currentTile = new TileView(getContext());
 
-        mNextTile = new TileView(context);
-        mCourt = new Court(context);
-        mRefreshHandler = new RefreshHandler(this);
-        mResourceStore = new ResourceStore(context);
+        nextTile = new TileView(getContext());
+        court = new Court(getContext());
+        refreshHandler = new RefreshHandler(this);
+        resourceStore = new ResourceStore(getContext());
 
-        mMPlayer = new MusicPlayer(context);
+        musicPlayer = new MusicPlayer(getContext());
 
-        //
         setLevel(1);
 
-        mPaint.setAntiAlias(true);
-        mPaint.setColor(Color.RED);
+        paint.setAntiAlias(true);
+        paint.setColor(Color.RED);
 
         setFocusable(true);
 
@@ -80,112 +80,102 @@ public class TetrisView extends View implements Runnable {
     public void logic() {
         switch (gamestate) {
         case STATE_MENU:
-            //
             gamestate = STATE_PLAY;
             break;
         case STATE_PLAY:
-            // startGame();
             playGame();
             break;
         case STATE_PAUSE:
-            // if(mAtPause == OPTION_RESUME)
-            // {
-            // mIsPaused = false;
-            // mGamestate = STATE_PLAY;
-            // break;
-            // }
-            // if(mPusedChoose = )
             break;
         case STATE_OVER:
-            // startGame();
-            // mGamestate = STATE_PLAY;
             break;
-        default:
-            ;
         }
     }
 
+    /**
+     * 启动游戏
+     */
     public void startGame() {
         gamestate = STATE_PLAY;
-        mCourt.clearCourt();
-        mCurrentTile = new TileView(context);
-        mNextTile = new TileView(context);
+        court.clearCourt();
+        currentTile = new TileView(getContext());
+        nextTile = new TileView(getContext());
 
-        // mSpeed = speed choosed
-        // mScore
-        // mLine
         setLevel(1);
-        mScore = 0;
-        mDeLine = 0;
-        mIsPaused = false;
-        mIsCombo = false;
+        score = 0;
+        deLine = 0;
+        isPaused = false;
+        isCombo = false;
 
         playGame();
     }
 
+    /**
+     * 启动游戏
+     */
     public void playGame() {
         long now = System.currentTimeMillis();
-        if (now - mLastMove > mMoveDelay) {
-            if (mIsPaused) {
+        if (now - lastMove > moveDelay) {
+            if (isPaused) {
                 return;
             }
-            if (mIsCombo) {
-                mCourt.placeTile(mCurrentTile);
-                // ////
-                mMPlayer.playMoveVoice();
 
-                if (mCourt.isGameOver()) {
+            if (isCombo) {
+                court.placeTile(currentTile);
+                musicPlayer.playMoveVoice();
+
+                if (court.isGameOver()) {
                     gamestate = STATE_OVER;
                     return;
                 }
-                int line = mCourt.removeLines();
+                int line = court.removeLines();
                 if (line > 0) {
-                    mMPlayer.playBombVoice();
+                    musicPlayer.playBombVoice();
                 }
-                mDeLine += line;
+                deLine += line;
                 countScore(line);
 
-                mCurrentTile = mNextTile;
-                mNextTile = new TileView(context);
+                currentTile = nextTile;
+                nextTile = new TileView(getContext());
 
-                mIsCombo = false;
+                isCombo = false;
             }
             moveDown();
 
-            mLastMove = now;
+            lastMove = now;
         }
     }
 
     private void countScore(int line) {
         switch (line) {
         case 1:
-            mScore += 100;
+            score += 100;
             break;
         case 2:
-            mScore += 300;
+            score += 300;
             break;
         case 3:
-            mScore += 600;
+            score += 600;
             break;
         case 4:
-            mScore += 1000;
+            score += 1000;
             break;
         default:
             ;
         }
-        if (mScore >= 2000 && mScore < 4000) {
+        if (score >= 2000 && score < 4000) {
             setLevel(2);
         }
-        else if (mScore >= 4000 && mScore < 6000) {
+        else if (score >= 4000 && score < 6000) {
             setLevel(3);
         }
-        else if (mScore >= 6000 && mScore < 8000) {
+        else if (score >= 6000 && score < 8000) {
             setLevel(4);
         }
-        else if (mScore >= 8000 && mScore < 10000) {
+        else if (score >= 8000 && score < 10000) {
             setLevel(5);
         }
-        else if (mScore >= 10000) {
+        else if (score >= 10000) {
             setLevel(6);
         }
     }
@@ -210,16 +200,16 @@ public class TetrisView extends View implements Runnable {
     }
 
     public boolean isGameOver() {
-        return mCourt.isGameOver();
+        return court.isGameOver();
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
         case KeyEvent.KEYCODE_DPAD_UP:
             if (gamestate == STATE_PLAY) {
-                if (!mIsPaused) {
+                if (!isPaused) {
                     rotate();
-                    mMPlayer.playMoveVoice();
+                    musicPlayer.playMoveVoice();
                 }
             }
             else if (gamestate == STATE_PAUSE) {
@@ -230,9 +220,9 @@ public class TetrisView extends View implements Runnable {
             break;
         case KeyEvent.KEYCODE_DPAD_DOWN:
             if (gamestate == STATE_PLAY) {
-                if (!mIsPaused) {
+                if (!isPaused) {
                     moveDown();
-                    mMPlayer.playMoveVoice();
+                    musicPlayer.playMoveVoice();
                 }
             }
             else if (gamestate == STATE_PAUSE) {
@@ -243,9 +233,9 @@ public class TetrisView extends View implements Runnable {
             break;
         case KeyEvent.KEYCODE_DPAD_LEFT:
             if (gamestate == STATE_PLAY) {
-                if (!mIsPaused) {
+                if (!isPaused) {
                     moveLeft();
-                    mMPlayer.playMoveVoice();
+                    musicPlayer.playMoveVoice();
                 }
             }
             else if (gamestate == STATE_PAUSE) {
@@ -256,9 +246,9 @@ public class TetrisView extends View implements Runnable {
             break;
         case KeyEvent.KEYCODE_DPAD_RIGHT:
             if (gamestate == STATE_PLAY) {
-                if (!mIsPaused) {
+                if (!isPaused) {
                     moveRight();
-                    mMPlayer.playMoveVoice();
+                    musicPlayer.playMoveVoice();
                 }
             }
             else if (gamestate == STATE_PAUSE) {
@@ -271,9 +261,9 @@ public class TetrisView extends View implements Runnable {
             ;
         case KeyEvent.KEYCODE_DPAD_CENTER:
             if (gamestate == STATE_PLAY) {
-                if (!mIsPaused) {
+                if (!isPaused) {
                     fastDrop();
-                    mMPlayer.playMoveVoice();
+                    musicPlayer.playMoveVoice();
                 }
             }
             else if (gamestate == STATE_PAUSE) {
@@ -284,22 +274,22 @@ public class TetrisView extends View implements Runnable {
         //
         case KeyEvent.KEYCODE_S:
             if (gamestate == STATE_PLAY) {
-                mIsPaused = true;
+                isPaused = true;
             }
             else if (gamestate == STATE_PAUSE) {
-                mIsPaused = false;
+                isPaused = false;
             }
             else if (gamestate == STATE_MENU) {
 
             }
             break;
         case KeyEvent.KEYCODE_SPACE:
-            mIsPaused = !mIsPaused;
-            if (mIsPaused) {
-                mRefreshHandler.pause();
+            isPaused = !isPaused;
+            if (isPaused) {
+                refreshHandler.pause();
             }
             else {
-                mRefreshHandler.resume();
+                refreshHandler.resume();
             }
             break;
 
@@ -311,54 +301,54 @@ public class TetrisView extends View implements Runnable {
 
     private void rotate() {
         // check
-        if (!mIsCombo) {
-            mCurrentTile.rotateOnCourt(mCourt);
+        if (!isCombo) {
+            currentTile.rotateOnCourt(court);
         }
     }
 
     private void moveDown() {
-        if (!mIsCombo) {
-            if (!mCurrentTile.moveDownOnCourt(mCourt)) {
-                mIsCombo = true;
+        if (!isCombo) {
+            if (!currentTile.moveDownOnCourt(court)) {
+                isCombo = true;
             }
         }
     }
 
     private void moveLeft() {
-        if (!mIsCombo) {
-            mCurrentTile.moveLeftOnCourt(mCourt);
+        if (!isCombo) {
+            currentTile.moveLeftOnCourt(court);
 
         }
     }
 
     private void moveRight() {
-        if (!mIsCombo) {
-            mCurrentTile.moveRightOnCourt(mCourt);
+        if (!isCombo) {
+            currentTile.moveRightOnCourt(court);
 
         }
 
     }
 
     private void fastDrop() {
-        if (!mIsCombo) {
-            mCurrentTile.fastDropOnCourt(mCourt);
-            mIsCombo = true;
+        if (!isCombo) {
+            currentTile.fastDropOnCourt(court);
+            isCombo = true;
         }
     }
 
     private void paintMenu(Canvas canvas) {
-        DrawTool.paintImage(canvas, mResourceStore.getMenuBackground(), 0, 0);
-        DrawTool.paintImage(canvas, mResourceStore.getMenu(), 0, SCREEN_HEIGHT / 2
-                - mResourceStore.getMenu().getHeight() / 2);
+        DrawTool.paintImage(canvas, resourceStore.getMenuBackground(), 0, 0);
+        DrawTool.paintImage(canvas, resourceStore.getMenu(), 0, SCREEN_HEIGHT / 2 - resourceStore.getMenu().getHeight()
+                / 2);
 
     }
 
     private void paintGame(Canvas canvas) {
-        mCourt.paintCourt(canvas);
-        mCurrentTile.paintTile(canvas);
-        // mNextTile.paintTile(canvas);
+        court.paintCourt(canvas);
+        currentTile.paintTile(canvas);
+        // nextTile.paintTile(canvas);
 
-        mPaint.setTextSize(20);
+        paint.setTextSize(20);
         paintNextTile(canvas);
         paintSpeed(canvas);
         paintScore(canvas);
@@ -369,10 +359,10 @@ public class TetrisView extends View implements Runnable {
         int i, j;
         for (i = 0; i < 4; i++) {
             for (j = 0; j < 4; j++) {
-                if (mNextTile.tile[i][j] != 0) {
+                if (nextTile.tile[i][j] != 0) {
                     DrawTool.paintImage(
                             canvas,
-                            mResourceStore.getBlock(mNextTile.getColor() - 1),
+                            resourceStore.getBlock(nextTile.getColor() - 1),
                             (int) (Court.BEGIN_DRAW_X + getBlockDistance(Court.COURT_WIDTH) + getBlockDistance((float) (i + 0.5))),
                             (int) (getBlockDistance((float) (j + 0.5))));
                 }
@@ -381,30 +371,30 @@ public class TetrisView extends View implements Runnable {
     }
 
     private void paintSpeed(Canvas canvas) {
-        mPaint.setColor(Color.BLUE);
+        paint.setColor(Color.BLUE);
         canvas.drawText("�ȼ�:", getBlockDistance(Court.COURT_WIDTH) + getRightMarginToCourt(), getBlockDistance(9),
-                mPaint);
-        mPaint.setColor(Color.RED);
-        canvas.drawText(String.valueOf(mSpeed), getBlockDistance(Court.COURT_WIDTH) + 2 * getRightMarginToCourt(),
-                getBlockDistance(11), mPaint);
+                paint);
+        paint.setColor(Color.RED);
+        canvas.drawText(String.valueOf(speed), getBlockDistance(Court.COURT_WIDTH) + 2 * getRightMarginToCourt(),
+                getBlockDistance(11), paint);
     }
 
     private void paintScore(Canvas canvas) {
-        mPaint.setColor(Color.BLUE);
+        paint.setColor(Color.BLUE);
         canvas.drawText("�÷�:", getBlockDistance(Court.COURT_WIDTH) + getRightMarginToCourt(), getBlockDistance(13),
-                mPaint);
-        mPaint.setColor(Color.RED);
-        canvas.drawText(String.valueOf(mScore), getBlockDistance(Court.COURT_WIDTH) + 2 * getRightMarginToCourt(),
-                getBlockDistance(15), mPaint);
+                paint);
+        paint.setColor(Color.RED);
+        canvas.drawText(String.valueOf(score), getBlockDistance(Court.COURT_WIDTH) + 2 * getRightMarginToCourt(),
+                getBlockDistance(15), paint);
     }
 
     private void paintDeLine(Canvas canvas) {
-        mPaint.setColor(Color.BLUE);
+        paint.setColor(Color.BLUE);
         canvas.drawText("��ȥ����:", getBlockDistance(Court.COURT_WIDTH) + getRightMarginToCourt(),
-                getBlockDistance(17), mPaint);
-        mPaint.setColor(Color.RED);
-        canvas.drawText(String.valueOf(mDeLine), getBlockDistance(Court.COURT_WIDTH) + 2 * getRightMarginToCourt(),
-                getBlockDistance(19), mPaint);
+                getBlockDistance(17), paint);
+        paint.setColor(Color.RED);
+        canvas.drawText(String.valueOf(deLine), getBlockDistance(Court.COURT_WIDTH) + 2 * getRightMarginToCourt(),
+                getBlockDistance(19), paint);
     }
 
     private float getBlockDistance(float blockNum) {
@@ -426,42 +416,39 @@ public class TetrisView extends View implements Runnable {
         paint.setAntiAlias(true);
         paint.setARGB(0xe0, 0xff, 0x00, 0x00);
         canvas.drawText("Game Over", getBlockDistance(1), getBlockDistance(Court.COURT_HEIGHT / 2 - 2), paint);
-        // DrawTool.paintImage(canvas,mResourceStore.getGameover(),0,SCREEN_HEIGHT/2 -
-        // mResourceStore.getGameover().getHeight()/2 );
+        // DrawTool.paintImage(canvas,resourceStore.getGameover(),0,SCREEN_HEIGHT/2 -
+        // resourceStore.getGameover().getHeight()/2 );
     }
 
     @Override
     public void run() {
-        // TODO Auto-generated method stub
         while (!Thread.currentThread().isInterrupted()) {
-            Message ms = new Message();
-            ms.what = RefreshHandler.MESSAGE_REFRESH;
-            this.mRefreshHandler.sendMessage(ms);
+            Message message = new Message();
+            message.what = RefreshHandler.MESSAGE_REFRESH;
+            refreshHandler.sendMessage(message);
             try {
-                Thread.sleep(/* RefreshHandler.DELAY_MILLIS */mMoveDelay);
+                Thread.sleep(moveDelay);
             }
             catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-
         }
-
     }
 
     public void setLevel(int level) {
-        mSpeed = level;
-        mMoveDelay = (long) (600 * (1.0 - mSpeed / 7.0));
+        speed = level;
+        moveDelay = (long) (600 * (1.0 - speed / 7.0));
     }
 
     public void setVoice(boolean isVoice) {
-        mIsVoice = isVoice;
-        mMPlayer.setMute(!mIsVoice);
+        this.isVoice = isVoice;
+        musicPlayer.setMute(!isVoice);
     }
 
     public void restoreGame() {
         Properties pro = new Properties();
         try {
-            FileInputStream in = context.openFileInput(DATAFILE);
+            FileInputStream in = getContext().openFileInput(DATAFILE);
             pro.load(in);
             in.close();
         }
@@ -471,21 +458,21 @@ public class TetrisView extends View implements Runnable {
         }
 
         gamestate = Integer.valueOf(pro.get("gamestate").toString());
-        mSpeed = Integer.valueOf(pro.get("speed").toString());
-        setLevel(mSpeed);
-        mScore = Integer.valueOf(pro.get("score").toString());
-        mDeLine = Integer.valueOf(pro.get("deLine").toString());
-        mIsVoice = Boolean.valueOf(pro.get("isVoice").toString());
-        mIsCombo = Boolean.valueOf(pro.get("isCombo").toString());
-        mIsPaused = Boolean.valueOf(pro.get("isPaused").toString());
+        speed = Integer.valueOf(pro.get("speed").toString());
+        setLevel(speed);
+        score = Integer.valueOf(pro.get("score").toString());
+        deLine = Integer.valueOf(pro.get("deLine").toString());
+        isVoice = Boolean.valueOf(pro.get("isVoice").toString());
+        isCombo = Boolean.valueOf(pro.get("isCombo").toString());
+        isPaused = Boolean.valueOf(pro.get("isPaused").toString());
 
         restoreCourt(pro);
-        restoreTile(pro, mCurrentTile);
-        restoreTile(pro, mNextTile);
+        restoreTile(pro, currentTile);
+        restoreTile(pro, nextTile);
     }
 
     private void restoreCourt(Properties pro) {
-        int[][] matrix = mCourt.getMatrix();
+        int[][] matrix = court.getMatrix();
         int i, j;
         for (i = 0; i < Court.COURT_WIDTH; i++) {
             for (j = 0; j < Court.COURT_HEIGHT; j++) {
@@ -512,39 +499,37 @@ public class TetrisView extends View implements Runnable {
         Properties pro = new Properties();
 
         pro.put("gamestate", String.valueOf(gamestate));
-        pro.put("speed", String.valueOf(mSpeed));
-        pro.put("score", String.valueOf(mScore));
-        pro.put("deLine", String.valueOf(mDeLine));
-        Boolean b = new Boolean(mIsVoice);
+        pro.put("speed", String.valueOf(speed));
+        pro.put("score", String.valueOf(score));
+        pro.put("deLine", String.valueOf(deLine));
+        Boolean b = new Boolean(isVoice);
         pro.put("isVoice", b.toString());
-        b = new Boolean(mIsCombo);
+        b = new Boolean(isCombo);
         pro.put("isCombo", b.toString());
-        b = new Boolean(mIsPaused);
+        b = new Boolean(isPaused);
         pro.put("isPaused", b.toString());
 
         saveCourt(pro);
-        saveTile(pro, mCurrentTile);
-        saveTile(pro, mNextTile);
+        saveTile(pro, currentTile);
+        saveTile(pro, nextTile);
 
         try {
-            FileOutputStream stream = context.openFileOutput(DATAFILE, Context.MODE_WORLD_WRITEABLE);
+            FileOutputStream stream = getContext().openFileOutput(DATAFILE, Context.MODE_WORLD_WRITEABLE);
             pro.store(stream, "");
             stream.close();
         }
         catch (IOException e) {
             Log.i(TAG, "ioexeption in saveGame()");
             return;
-
         }
-
     }
 
     private void saveCourt(Properties pro) {
-        int[][] court = mCourt.getMatrix();
+        int[][] ct = court.getMatrix();
         int i, j;
         for (i = 0; i < Court.COURT_WIDTH; i++) {
             for (j = 0; j < Court.COURT_HEIGHT; j++) {
-                pro.put("courtMatrix" + i + j, String.valueOf(court[i][j]));
+                pro.put("courtMatrix" + i + j, String.valueOf(ct[i][j]));
             }
         }
     }
@@ -564,17 +549,17 @@ public class TetrisView extends View implements Runnable {
     }
 
     public void onPause() {
-        mRefreshHandler.pause();
-        mIsPaused = true;
+        refreshHandler.pause();
+        isPaused = true;
 
     }
 
     public void onResume() {
-        mRefreshHandler.resume();
-        mIsPaused = false;
+        refreshHandler.resume();
+        isPaused = false;
     }
 
     public void freeResources() {
-        mMPlayer.free();
+        musicPlayer.free();
     }
 }
