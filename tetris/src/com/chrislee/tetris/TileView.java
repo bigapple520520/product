@@ -14,7 +14,7 @@ import android.util.Log;
  * @version $Revision: 1.0 $, $Date: 2014-1-13 下午8:03:29 $
  */
 public class TileView {
-    private final int[][] tile = new int[4][4];
+    public final int[][] tile = new int[4][4];
     private int color = 1;
     private int shape = 0;
     private int offsetX = (Court.COURT_WIDTH - 4) / 2 + 1;
@@ -42,10 +42,9 @@ public class TileView {
 
     public boolean rotateOnCourt(Court court) {
         int tempX = 0, tempY = 0;
-        int tempShape;
+        int tempShape = shape;
         int[][] tempTile = new int[4][4];
 
-        tempShape = shape;
         if (tempShape % 4 > 0) {
             tempShape--;
         }

@@ -4,8 +4,13 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * 存储排行的数据库操作
+ * 
+ * @author xuan
+ * @version $Revision: 1.0 $, $Date: 2014-1-14 下午8:19:00 $
+ */
 public class RankDatabase {
-
     private static final String DB_NAME = "rank.db";
     private static final String DB_TABLE = "table1";
     private static final int DB_VERSION = 1;
@@ -18,17 +23,31 @@ public class RankDatabase {
     private static final String DB_CREATE = "CREATE TABLE " + DB_TABLE + " (" + KEY_ID + " INTEGER PRIMARY_KEY,"
             + KEY_RANK + " INTEGER," + KEY_SCORE + " INTEGER" + KEY_NAME + " TEXT)";
 
-    private Context mContext = null;
-    private SQLiteDatabase mDatabase = null;
-    private DatabaseHelper mHelper = null;
+    private Context context = null;
+    private SQLiteDatabase database = null;
+    private DBHelper dBHelper = null;
 
-    public void RankDatabase(Context context) {
-        mContext = context;
+    public RankDatabase(Context context) {
+        this.context = context;
     }
 
-    private static class DatabaseHelper extends SQLiteOpenHelper {
+    public void open() {
+        dBHelper = new DBHelper(context);
+        database = dBHelper.getWritableDatabase();
+    }
 
-        public DatabaseHelper(Context context) {
+    public void close() {
+        dBHelper.close();
+    }
+
+    /**
+     * 数据库操作类
+     * 
+     * @author xuan
+     * @version $Revision: 1.0 $, $Date: 2014-1-14 下午8:15:48 $
+     */
+    private static class DBHelper extends SQLiteOpenHelper {
+        public DBHelper(Context context) {
             super(context, DB_NAME, null, DB_VERSION);
         }
 
@@ -39,17 +58,7 @@ public class RankDatabase {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
         }
-    }
-
-    public void open() {
-        mHelper = new DatabaseHelper(mContext);
-        mDatabase = mHelper.getWritableDatabase();
-    }
-
-    public void close() {
-        mHelper.close();
     }
 
 }

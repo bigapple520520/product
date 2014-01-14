@@ -34,14 +34,12 @@ public class Court {
     }
 
     public boolean isGameOver() {
-
         for (int i = 0; i < COURT_WIDTH; i++) {
             if (mCourt[i][ABOVE_VISIBLE_TOP] != 0) {
                 return true;
             }
         }
         return false;
-
     }
 
     public boolean isSpace(int posX, int posY) {
@@ -167,7 +165,6 @@ public class Court {
                 }
             }
         }
-
     }
 
     public int[][] getMatrix() {
