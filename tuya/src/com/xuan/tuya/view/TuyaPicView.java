@@ -1,243 +1,228 @@
 package com.xuan.tuya.view;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.example.tuya.R;
-import com.xuan.tuya.common.Constants;
-import com.xuan.tuya.utils.ContextUtils;
+import com.xuan.tuya.R;
 
 /**
- * Í¿Ñ»Í¼Æ¬view
+ * æ¶‚é¸¦å›¾ç‰‡view
  * 
  * @author xuan
  */
 public class TuyaPicView extends View {
-	private Bitmap mBitmap;
-	private Canvas mCanvas;
-	private Path mPath;// ÓÃÀ´»­Í¼ĞÎµÄ£¬ÀıÈç¿ÉÒÔÓÃËû»­Ò»¸öÈı½ÇĞÎµÈµÈ
-	private Paint mBitmapPaint;// »­²¼µÄ»­±Ê
-	private Paint mPaint;// ÕæÊµµÄ»­±Ê
-	private float mX, mY;// ÁÙÊ±µã×ø±ê
-	private static final float TOUCH_TOLERANCE = 4;// Â·¾¶¼ÍÂ¼³¤¶È£¬ÀıÈçÔÚ»¬¶¯ÖĞ£¬µãxyµÄ×ø±ê³¬¹ıÁÙÊ±µã×ø±êµÄÕâ¸öÖµ£¬¾Í»­Ïß
+    private static final float TOUCH_TOLERANCE = 4;// è·¯å¾„çºªå½•é•¿åº¦ï¼Œä¾‹å¦‚åœ¨æ»‘åŠ¨ä¸­ï¼Œç‚¹xyçš„åæ ‡è¶…è¿‡ä¸´æ—¶ç‚¹åæ ‡çš„è¿™ä¸ªå€¼ï¼Œå°±ç”»çº¿
+    private static final int DEFAULT_COLOR = R.color.doodle_blank_bg;
 
-	// ±£´æPathÂ·¾¶µÄ¼¯ºÏ,ÓÃList¼¯ºÏÀ´Ä£ÄâÕ»
-	private static List<DrawPath> savePath;
-	// ¼ÇÂ¼PathÂ·¾¶µÄ¶ÔÏó
-	private DrawPath dp;
+    private Bitmap mBgPicBitmap;
 
-	private boolean isInit = false;// ÓÃÀ´±ê¼Ç±£Ö¤Ö»±»³õÊ¼»¯Ò»´Î
+    private Bitmap mBitmap;
+    private Canvas mCanvas;
 
-	// ²¼¾Ö¸ßºÍ¿í
-	private int screenWidth = 500, screenHeight = 500;
+    private Path mPath;// ç”¨æ¥ç”»å›¾å½¢çš„ï¼Œä¾‹å¦‚å¯ä»¥ç”¨ä»–ç”»ä¸€ä¸ªä¸‰è§’å½¢ç­‰ç­‰
+    private Paint mPaint;// çœŸå®çš„ç”»ç¬”
+    private float mX, mY;// ä¸´æ—¶ç‚¹åæ ‡
 
-	public TuyaPicView(Context context) {
-		super(context);
-	}
+    private static List<DrawPath> savePath;// ä¿å­˜Pathè·¯å¾„çš„é›†åˆ,ç”¨Listé›†åˆæ¥æ¨¡æ‹Ÿæ ˆ
+    private DrawPath mDrawPath;// è®°å½•Pathè·¯å¾„çš„å¯¹è±¡
 
-	public TuyaPicView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-	}
+    private boolean isInit = false;// ç”¨æ¥æ ‡è®°ä¿è¯åªè¢«åˆå§‹åŒ–ä¸€æ¬¡
 
-	public TuyaPicView(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-	}
+    // å¸ƒå±€é«˜å’Œå®½
+    private int screenWidth = 500;
+    private int screenHeight = 500;
 
-	public void init(int w, int h) {
-		// ±£Ö¤Ö»±»³õÊ¼»¯Ò»´Î¾Í¹»ÁË
-		if (!isInit) {
-			screenWidth = w;
-			screenHeight = h;
+    public TuyaPicView(Context context) {
+        super(context);
+    }
 
-			mBitmap = Bitmap.createBitmap(screenWidth, screenHeight,
-					Bitmap.Config.ARGB_8888);
+    public TuyaPicView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
 
-			// ±£´æÒ»´ÎÒ»´Î»æÖÆ³öÀ´µÄÍ¼ĞÎ
-			mCanvas = new Canvas(mBitmap);
+    public TuyaPicView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
 
-			mBitmapPaint = new Paint(Paint.DITHER_FLAG);
-			mPaint = new Paint();
-			mPaint.setAntiAlias(true);
-			mPaint.setStyle(Paint.Style.STROKE);
-			mPaint.setStrokeJoin(Paint.Join.ROUND);// ÉèÖÃÍâ±ßÔµ
-			mPaint.setStrokeCap(Paint.Cap.ROUND);// ĞÎ×´
-			mPaint.setStrokeWidth(5);// »­±Ê¿í¶È
+    // åˆå§‹åŒ–
+    private void init(int w, int h) {
+        if (!isInit) {
+            mBitmap = Bitmap.createBitmap(screenWidth, screenHeight, Bitmap.Config.ARGB_8888);
+            mCanvas = new Canvas(mBitmap);
+            mCanvas.drawColor(getResources().getColor(DEFAULT_COLOR));
 
-			savePath = new ArrayList<DrawPath>();
-			isInit = true;
-		}
-	}
+            initPaint(getResources().getColor(R.color.doodle_pan_black), 8);
 
-	@Override
-	public void onDraw(Canvas canvas) {
-		int color = getResources().getColor(R.color.color_white);
-		canvas.drawColor(color);
+            savePath = new ArrayList<DrawPath>();
+            isInit = true;
+        }
+    }
 
-		// ½«Ç°ÃæÒÑ¾­»­¹ıµÃÏÔÊ¾³öÀ´
-		canvas.drawBitmap(mBitmap, 0, 0, null);
-		if (mPath != null) {
-			// ÊµÊ±µÄÏÔÊ¾
-			canvas.drawPath(mPath, mPaint);
-		}
-	}
+    /**
+     * åˆå§‹åŒ–ä¸åŒé¢œè‰²çš„ç”»ç¬”
+     * 
+     * @param resId
+     * @param strokeWidth
+     */
+    public void initPaint(int color, float strokeWidth) {
+        mPaint = new Paint();
+        mPaint.setAntiAlias(true);
+        mPaint.setColor(color);
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setStrokeJoin(Paint.Join.ROUND);// è®¾ç½®å¤–è¾¹ç¼˜
+        mPaint.setStrokeCap(Paint.Cap.ROUND);// å½¢çŠ¶
+        mPaint.setStrokeWidth(strokeWidth);// ç”»ç¬”å®½åº¦
+    }
 
-	// ²¼¾ÖµÄ´óĞ¡¸Ä±äÊ±£¬¾Í»áµ÷ÓÃ¸Ã·½·¨
-	@Override
-	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-		// ²¼¾ÖµÄ´óĞ¡¸Ä±äÊ±£¬¾Í»áµ÷ÓÃ¸Ã·½·¨£¬ÔÚÕâÀï»ñÈ¡µ½viewµÄ¸ßºÍ¿í
-		screenWidth = w;
-		screenHeight = h;
+    /**
+     * è·å–æ¶‚é¸¦å¥½çš„å›¾ç‰‡
+     * 
+     * @return
+     */
+    public Bitmap getTuyaBitmap() {
+        return mBitmap;
+    }
 
-		// view³õÊ¼»¯
-		init(screenWidth, screenHeight);
-		super.onSizeChanged(w, h, oldw, oldh);
-	}
+    /**
+     * é‡æ–°åˆå§‹åŒ–èƒŒæ™¯å›¾ç‰‡
+     * 
+     * @param bgPicBitmap
+     */
+    public void initBgPicBitmap(Bitmap bgPicBitmap) {
+        this.mBgPicBitmap = bgPicBitmap;
+        savePath.clear();
+        redrawOnBitmap();
+    }
 
-	/**
-	 * ³·ÏúÉÏÒ»²½»­Ïß<br />
-	 * ³·ÏúµÄºËĞÄË¼Ïë¾ÍÊÇ½«»­²¼Çå¿Õ£¬½«±£´æÏÂÀ´µÄPathÂ·¾¶×îºóÒ»¸öÒÆ³ıµô£¬ÖØĞÂ½«Â·¾¶»­ÔÚ»­²¼ÉÏÃæ¡£
-	 */
-	public void undo() {
-		if (savePath != null && savePath.size() > 0) {
-			savePath.remove(savePath.size() - 1);
-			redrawOnBitmap();
-		}
-	}
+    /**
+     * è·å–ç”»ç¬”
+     * 
+     * @return
+     */
+    public Paint getPaint() {
+        return mPaint;
+    }
 
-	/**
-	 * ÖØ×ö,¾ÍÊÇÇå¿ÕËùÓĞµÄ»­Ïß<br />
-	 * ºËĞÄË¼Ïë¾ÍÊÇ£¬Çå¿ÕPathÂ·¾¶ºó£¬½øĞĞÖØĞÂ»æÖÆ
-	 */
-	public void redo() {
-		if (savePath != null && savePath.size() > 0) {
-			savePath.clear();
-			redrawOnBitmap();
-		}
-	}
+    /**
+     * æ’¤é”€ä¸Šä¸€æ­¥ç”»çº¿<br>
+     * æ’¤é”€çš„æ ¸å¿ƒæ€æƒ³å°±æ˜¯å°†ç”»å¸ƒæ¸…ç©ºï¼Œå°†ä¿å­˜ä¸‹æ¥çš„Pathè·¯å¾„æœ€åä¸€ä¸ªç§»é™¤æ‰ï¼Œé‡æ–°å°†è·¯å¾„ç”»åœ¨ç”»å¸ƒä¸Šé¢ã€‚
+     */
+    public void undo() {
+        if (savePath != null && savePath.size() > 0) {
+            savePath.remove(savePath.size() - 1);
+            redrawOnBitmap();
+        }
+    }
 
-	// °´ÏÂ
-	private void touch_start(float x, float y) {
-		mPath.moveTo(x, y);
-		mX = x;
-		mY = y;
-	}
+    /**
+     * é‡åš,å°±æ˜¯æ¸…ç©ºæ‰€æœ‰çš„ç”»çº¿<br>
+     * æ ¸å¿ƒæ€æƒ³å°±æ˜¯ï¼Œæ¸…ç©ºPathè·¯å¾„åï¼Œè¿›è¡Œé‡æ–°ç»˜åˆ¶
+     */
+    public void redo() {
+        if (null != savePath && savePath.size() > 0) {
+            savePath.clear();
+            redrawOnBitmap();
+        }
+    }
 
-	// ÕıÔÚ»¬¶¯ÖĞ
-	private void touch_move(float x, float y) {
-		float dx = Math.abs(x - mX);
-		float dy = Math.abs(mY - y);
-		if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-			// ´Ó£¨mX,mY£©µ½£¨x,y£©»­Ò»Ìõ±´Èû¶ûÇúÏß£¬¸üÆ½»¬(Ö±½ÓÓÃmPath.lineToÒ²ÊÇ¿ÉÒÔµÄ)
-			mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
-			mX = x;
-			mY = y;
-		}
-	}
+    // é‡æ–°ç»˜åˆ¶Pathä¸­çš„ç”»çº¿è·¯å¾„
+    private void redrawOnBitmap() {
+        if (null == mBgPicBitmap) {
+            mBitmap = Bitmap.createBitmap(screenWidth, screenHeight, Bitmap.Config.ARGB_8888);
+            mCanvas.setBitmap(mBitmap);
+            mCanvas.drawColor(getResources().getColor(DEFAULT_COLOR));
+        }
+        else {
+            mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.tuya_bg).copy(Bitmap.Config.ARGB_8888,
+                    true);
+            mCanvas.setBitmap(mBitmap);
+        }
 
-	// »¬¶¯Ì«ÊÖ
-	private void touch_up() {
-		mPath.lineTo(mX, mY);
-		mCanvas.drawPath(mPath, mPaint);
-		// ½«Ò»ÌõÍêÕûµÄÂ·¾¶±£´æÏÂÀ´(Ïàµ±ÓÚÈëÕ»²Ù×÷)
-		savePath.add(dp);
-		mPath = null;// ÖØĞÂÖÃ¿Õ
-	}
+        for (DrawPath drawPath : savePath) {
+            mCanvas.drawPath(drawPath.path, drawPath.paint);
+        }
 
-	// ÖØĞÂ»æÖÆPathÖĞµÄ»­ÏßÂ·¾¶
-	private void redrawOnBitmap() {
-		mBitmap = Bitmap.createBitmap(screenWidth, screenHeight,
-				Bitmap.Config.ARGB_8888);
-		mCanvas.setBitmap(mBitmap);// ÖØĞÂÉèÖÃ»­²¼£¬Ïàµ±ÓÚÇå¿Õ»­²¼
+        invalidate();// åˆ·æ–°
+    }
 
-		for (DrawPath drawPath : savePath) {
-			mCanvas.drawPath(drawPath.path, drawPath.paint);
-		}
+    @Override
+    public void onDraw(Canvas canvas) {
+        canvas.drawBitmap(mBitmap, 0, 0, null);// æŠŠå›¾ç‰‡æ˜¾ç¤ºåˆ°ç”»å¸ƒä¸Š
 
-		invalidate();// Ë¢ĞÂ
-	}
+        if (null != mPath) {
+            canvas.drawPath(mPath, mPaint);
+        }
+    }
 
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		float x = event.getX();
-		float y = event.getY();
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        screenWidth = w;
+        screenHeight = h;
+        init(screenWidth, screenHeight);
+        super.onSizeChanged(w, h, oldw, oldh);
+    }
 
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			// Ã¿´ÎdownÏÂÈ¥ÖØĞÂnewÒ»¸öPath
-			mPath = new Path();
-			// Ã¿Ò»´Î¼ÇÂ¼µÄÂ·¾¶¶ÔÏóÊÇ²»Ò»ÑùµÄ
-			dp = new DrawPath();
-			dp.path = mPath;
-			dp.paint = mPaint;
-			touch_start(x, y);
-			invalidate();
-			break;
-		case MotionEvent.ACTION_MOVE:
-			touch_move(x, y);
-			invalidate();
-			break;
-		case MotionEvent.ACTION_UP:
-			touch_up();
-			invalidate();
-			break;
-		}
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        float x = event.getX();
+        float y = event.getY();
 
-		return true;
-	}
+        switch (event.getAction()) {
+        case MotionEvent.ACTION_DOWN:
+            mPath = new Path();
+            mDrawPath = new DrawPath(mPath, mPaint);
 
-	/**
-	 * ±£´æÍ¼Æ¬
-	 */
-	public boolean saveToSDCard(String filePath) {
-		if (!ContextUtils.hasSdCard()) {
-			return false;
-		}
+            mPath.moveTo(x, y);
+            mX = x;
+            mY = y;
+            break;
+        case MotionEvent.ACTION_MOVE:
+            float dx = Math.abs(x - mX);
+            float dy = Math.abs(y - mY);
+            if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
+                // ä»ï¼ˆmX,mYï¼‰åˆ°ï¼ˆx,yï¼‰ç”»ä¸€æ¡è´å¡å°”æ›²çº¿ï¼Œæ›´å¹³æ»‘(ç›´æ¥ç”¨mPath.lineToä¹Ÿæ˜¯å¯ä»¥çš„)
+                mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
+                mX = x;
+                mY = y;
+            }
+            break;
+        case MotionEvent.ACTION_UP:
+            mPath.lineTo(mX, mY);
+            mCanvas.drawPath(mPath, mPaint);
 
-		try {
-			File file = new File(filePath);
-			createParentDirs(file);
+            savePath.add(mDrawPath);// ç®—ä¸€ç¬”
+            mPath = null;
 
-			FileOutputStream fos = new FileOutputStream(file);
-			mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-			fos.flush();
-			fos.close();
-			// FileUtils.saveFileByBitmap(filePath, mBitmap);
-		} catch (Exception e) {
-			Log.e(Constants.TAG, "", e);
-			return false;
-		}
+            break;
+        }
 
-		return true;
-	}
+        invalidate();
+        return true;
+    }
 
-	// Èç¹û¸¸Ä¿Â¼²»´æÔÚ£¬Ôò´´½¨Ö®
-	private static void createParentDirs(File file) {
-		File parentPath = file.getParentFile();
-		if (!parentPath.exists() || !parentPath.isDirectory()) {
-			parentPath.mkdirs();
-		}
-	}
+    /**
+     * æ¯æ¡è·¯å¾„å°è£…ç±»
+     * 
+     * @author xuan
+     */
+    private class DrawPath {
+        private DrawPath(Path path, Paint paint) {
+            this.path = path;
+            this.paint = paint;
+        }
 
-	/**
-	 * Ã¿ÌõÂ·¾¶·â×°Àà
-	 * 
-	 * @author xuan
-	 */
-	private class DrawPath {
-		public Path path;// Â·¾¶
-		public Paint paint;// »­±Ê
-	}
+        public Path path;// è·¯å¾„
+        public Paint paint;// ç”»ç¬”
+    }
 
 }

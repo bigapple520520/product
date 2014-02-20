@@ -10,77 +10,97 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
-import android.util.Log;
-
-import com.xuan.tuya.common.Constants;
+import android.telephony.TelephonyManager;
 
 /**
- * �ж��ֻ����磬SD�ȹ�����
+ * 判断网络或者SD等之类的工具类
  * 
  * @author xuan
- * @version $Revision: 1.0 $, $Date: 2012-5-7 ����02:58:39 $
+ * @version $Revision: 1.0 $, $Date: 2013-3-25 上午9:22:02 $
  */
-public class ContextUtils {
-	private ContextUtils() {
-	}
+public abstract class ContextUtils {
 
-	/**
-	 * �ж��Ƿ������������
-	 * 
-	 * @param context
-	 * @return
-	 */
-	public static boolean hasNetwork(Context context) {
-		ConnectivityManager connectManager = (ConnectivityManager) context
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo networkInfo = connectManager.getActiveNetworkInfo();
-		if (networkInfo == null
-				|| !connectManager.getActiveNetworkInfo().isAvailable()
-				|| !connectManager.getActiveNetworkInfo().isConnected()) {
-			return false;
-		}
-		return true;
-	}
+    /**
+     * 判断是否存在网络连接
+     * 
+     * @param context
+     * @return
+     */
+    public static boolean hasNetwork(Context context) {
+        ConnectivityManager connectManager = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectManager.getActiveNetworkInfo();
 
-	/**
-	 * �ж�GPS�Ƿ��
-	 * 
-	 * @param context
-	 * @return
-	 */
-	public static boolean isGpsEnabled(Context context) {
-		LocationManager alm = (LocationManager) context
-				.getSystemService(Context.LOCATION_SERVICE);
-		if (!alm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-			return false;
-		}
-		return true;
-	}
+        return null != networkInfo && networkInfo.isAvailable() && networkInfo.isConnected();
+    }
 
-	/**
-	 * ����λdpת��Ϊpx
-	 * 
-	 * @param dpValue
-	 * @return
-	 */
-	public static int dip2px(float dpValue, Context context) {
-		final float scale = context.getResources().getDisplayMetrics().density;
-		int px = (int) (dpValue * scale + 0.5f);
-		Log.d(Constants.TAG, "from " + dpValue + "dp to:" + px + "px");
-		return px;
-	}
+    /**
+     * 判断GPS是否打开
+     * 
+     * @param context
+     * @return
+     */
+    public static boolean isGpsEnabled(Context context) {
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
 
-	/**
-	 * SD���Ƿ����
-	 * 
-	 * @return
-	 */
-	public static boolean hasSdCard() {
-		if (!Environment.getExternalStorageState().equals(
-				Environment.MEDIA_MOUNTED)) {
-			// sdcard ������
-			return false;
-		}
-		return true;
-	}
+    /**
+     * SD卡是否可用
+     * 
+     * @return
+     */
+    public static boolean hasSdCard() {
+        return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
+    }
+
+    /**
+     * 获取SD的根目录
+     * 
+     * @return
+     */
+    public static String getSdCardPath() {
+        return Environment.getExternalStorageDirectory().getPath();
+    }
+
+    /**
+     * 获取手机本身的内置存储，一般SD卡不存在的时候使用。 /data/data/程序包名/cache
+     * 
+     * @param context
+     * @return
+     */
+    public static String getCacheDirPath(Context context) {
+        return context.getCacheDir().getPath();
+    }
+
+    /**
+     * 获取手机本身的内置存储。 /data/data/程序包名/files
+     * 
+     * @param context
+     * @return
+     */
+    public static String getFileDirPath(Context context) {
+        return context.getFilesDir().getPath();
+    }
+
+    /**
+     * 获取SD默认缓存路径：/Android/data/程序包名/cache/
+     * 
+     * @param context
+     * @return
+     */
+    public static String getExternalCacheDirPath(Context context) {
+        return context.getExternalCacheDir().getPath();
+    }
+
+    /**
+     * 是否有sim卡
+     * 
+     * @return
+     */
+    public static boolean hasSimCard(Context context) {
+        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        return telephonyManager.getSimState() == TelephonyManager.SIM_STATE_READY;
+    }
+
 }

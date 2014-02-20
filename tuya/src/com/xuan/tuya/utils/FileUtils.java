@@ -1,54 +1,58 @@
+/* 
+ * @(#)FileUtils.java    Created on 2014-2-19
+ * Copyright (c) 2014 ZDSoft Networks, Inc. All rights reserved.
+ * $Id$
+ */
 package com.xuan.tuya.utils;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
+import java.io.FileOutputStream;
 
 import android.graphics.Bitmap;
-import android.util.Log;
-
-import com.xuan.tuya.common.Constants;
 
 /**
- * ÎÄ¼ş±£´æÀà¹¤¾ß
+ * æ–‡ä»¶ä¿å­˜å·¥å…·
  * 
  * @author xuan
+ * @version $Revision: 1.0 $, $Date: 2014-2-19 ä¸Šåˆ11:51:05 $
  */
 public abstract class FileUtils {
-	/**
-	 * ±£´æ×Ö½Úµ½Ö¸¶¨ÎÄ¼ş
-	 * 
-	 * @param filePath
-	 * @param bs
-	 */
-	public static void saveFileByBytes(String fileName, byte[] bs) {
-		if (!ContextUtils.hasSdCard()) {
-			return;
-		}
 
-		try {
-			org.apache.commons.io.FileUtils.writeByteArrayToFile(new File(
-					fileName), bs);
-		} catch (IOException e) {
-			Log.e(Constants.TAG, "", e);
-		}
-	}
+    /**
+     * ä¿å­˜å›¾ç‰‡
+     * 
+     * @param filePath
+     * @param bitmap
+     * @return
+     */
+    public static boolean saveToSDCard(String filePath, Bitmap bitmap) {
+        if (!ContextUtils.hasSdCard()) {
+            return false;
+        }
 
-	/**
-	 * ±£´æbitmapµ½Ö¸¶¨ÎÄ¼ş
-	 * 
-	 * @param fileName
-	 * @param bs
-	 */
-	public static void saveFileByBitmap(String fileName, Bitmap bitmap) {
-		if (!ContextUtils.hasSdCard()) {
-			return;
-		}
+        try {
+            File file = new File(filePath);
+            createParentDirs(file);
 
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            FileOutputStream fos = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+        }
+        catch (Exception e) {
+            LogUtils.e("", e);
+            return false;
+        }
 
-		saveFileByBytes(fileName, baos.toByteArray());
-	}
+        return true;
+    }
+
+    // å¦‚æœçˆ¶ç›®å½•ä¸å­˜åœ¨ï¼Œåˆ™åˆ›å»ºä¹‹
+    private static void createParentDirs(File file) {
+        File parentPath = file.getParentFile();
+        if (!parentPath.exists() || !parentPath.isDirectory()) {
+            parentPath.mkdirs();
+        }
+    }
 
 }

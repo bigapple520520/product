@@ -3,20 +3,16 @@ package com.xuan.tuya.common;
 import android.os.Environment;
 
 /**
- * ³£Á¿Àà
+ * å¸¸é‡ç±»
  * 
  * @author xuan
  */
 public abstract class Constants {
 
-	// ÈÕÖ¾Êä³ö±êÖ¾
-	public static final String TAG = "tuya";
+    // æ‰‹æœºSDå¡çš„è·¯å¾„
+    public static final String SDCARD = Environment.getExternalStorageDirectory().getPath();
 
-	// ÊÖ»úSD¿¨µÄÂ·¾¶
-	public static final String SDCARD = Environment
-			.getExternalStorageDirectory().getPath();
-
-	// ¸üĞÂapkÊ±£¬ÏÂÔØÏÂÀ´´æ·ÅµÄÎÄ¼ş¼ĞÂ·¾¶
-	public static final String PIC_STORE_PATH = SDCARD + "/tuya/";
+    // æ¶‚é¸¦å›¾ç‰‡å­˜æ”¾è·¯åŠ²
+    public static final String PIC_STORE_PATH = SDCARD + "/tuya/";
 
 }

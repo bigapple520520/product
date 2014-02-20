@@ -1,10 +1,7 @@
 package com.xuan.tuya;
 
-/**
- * ¹«¹²
- * 
- * @author xuan
- */
+import com.xuan.tuya.vinject.AnActivity;
+
 public class BasicActivity extends AnActivity {
 
 }

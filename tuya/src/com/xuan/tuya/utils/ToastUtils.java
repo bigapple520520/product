@@ -10,67 +10,62 @@ import android.os.Handler;
 import android.widget.Toast;
 
 /**
- * ÍÂË¾ĞÅÏ¢¹¤¾ßÀà
+ * åå¸ä¿¡æ¯å·¥å…·ç±»
  * 
  * @author xuan
- * @version $Revision: 31799 $, $Date: 2012-10-25 12:59:34 +0800 (ĞÇÆÚËÄ, 25 Ê®ÔÂ
- *          2012) $
+ * @version $Revision: 1.0 $, $Date: 2013-3-25 ä¸‹åˆ7:40:05 $
  */
-public class ToastUtils {
-	/**
-	 * ÏÔÊ¾ÍÂË¾ĞÅÏ¢£¨½Ï³¤Ê±¼ä£©
-	 * 
-	 * @param context
-	 * @param text
-	 */
-	public static void displayTextLong(Context context, String text) {
-		Toast.makeText(context, text, Toast.LENGTH_LONG).show();
-	}
+public abstract class ToastUtils {
+    /**
+     * æ˜¾ç¤ºåå¸ä¿¡æ¯ï¼ˆè¾ƒé•¿æ—¶é—´ï¼‰
+     * 
+     * @param context
+     * @param text
+     */
+    public static void displayTextLong(Context context, String text) {
+        Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+    }
 
-	/**
-	 * ÏÔÊ¾ÍÂË¾ĞÅÏ¢£¨½Ï¶ÌÊ±¼ä£©
-	 * 
-	 * @param context
-	 * @param text
-	 */
-	public static void displayTextShort(Context context, String text) {
-		Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
-	}
+    /**
+     * æ˜¾ç¤ºåå¸ä¿¡æ¯ï¼ˆè¾ƒçŸ­æ—¶é—´ï¼‰
+     * 
+     * @param context
+     * @param text
+     */
+    public static void displayTextShort(Context context, String text) {
+        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+    }
 
-	/**
-	 * ÏÔÊ¾ÍÂË¾ĞÅÏ¢½»¸øhandler´¦Àí£¨½Ï³¤Ê±¼ä£©
-	 * 
-	 * @param context
-	 * @param text
-	 * @param handler
-	 */
-	public static void displayTextLong2Handler(final Context context,
-			final String text, Handler handler) {
+    /**
+     * æ˜¾ç¤ºåå¸ä¿¡æ¯äº¤ç»™handlerå¤„ç†ï¼ˆè¾ƒé•¿æ—¶é—´ï¼‰
+     * 
+     * @param context
+     * @param text
+     * @param handler
+     */
+    public static void displayTextLong2Handler(final Context context, final String text, Handler handler) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                ToastUtils.displayTextLong(context, text);
+            }
+        });
+    }
 
-		handler.post(new Runnable() {
-			@Override
-			public void run() {
-				ToastUtils.displayTextLong(context, text);
-			}
-		});
-	}
+    /**
+     * æ˜¾ç¤ºåå¸ä¿¡æ¯äº¤ç»™handlerå¤„ç†ï¼ˆè¾ƒçŸ­æ—¶é—´ï¼‰
+     * 
+     * @param context
+     * @param text
+     * @param handler
+     */
+    public static void displayTextShort2Handler(final Context context, final String text, Handler handler) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                ToastUtils.displayTextShort(context, text);
+            }
+        });
+    }
 
-	/**
-	 * ÏÔÊ¾ÍÂË¾ĞÅÏ¢½»¸øhandler´¦Àí£¨½Ï¶ÌÊ±¼ä£©
-	 * 
-	 * @param context
-	 * @param text
-	 * @param handler
-	 */
-	public static void displayTextShort2Handler(final Context context,
-			final String text, Handler handler) {
-
-		handler.post(new Runnable() {
-
-			@Override
-			public void run() {
-				ToastUtils.displayTextShort(context, text);
-			}
-		});
-	}
 }
