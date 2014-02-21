@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -143,8 +142,8 @@ public class TuyaPicView extends View {
             mCanvas.drawColor(getResources().getColor(DEFAULT_COLOR));
         }
         else {
-            mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.tuya_bg).copy(Bitmap.Config.ARGB_8888,
-                    true);
+            mCanvas.drawColor(getResources().getColor(DEFAULT_COLOR));
+            mBitmap = mBgPicBitmap.copy(Bitmap.Config.ARGB_8888, true);
             mCanvas.setBitmap(mBitmap);
         }
 

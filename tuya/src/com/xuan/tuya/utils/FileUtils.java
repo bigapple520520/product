@@ -32,7 +32,7 @@ public abstract class FileUtils {
 
         try {
             File file = new File(filePath);
-            createParentDirs(file);
+            createDir(file.getParentFile());
 
             FileOutputStream fos = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
@@ -47,11 +47,14 @@ public abstract class FileUtils {
         return true;
     }
 
-    // 如果父目录不存在，则创建之
-    private static void createParentDirs(File file) {
-        File parentPath = file.getParentFile();
-        if (!parentPath.exists() || !parentPath.isDirectory()) {
-            parentPath.mkdirs();
+    /**
+     * 文件夹不存在就创建
+     * 
+     * @param file
+     */
+    public static void createDir(File dir) {
+        if (!dir.exists()) {
+            dir.mkdirs();
         }
     }
 

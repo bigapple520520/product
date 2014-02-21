@@ -15,4 +15,6 @@ public abstract class Constants {
     // 涂鸦图片存放路劲
     public static final String PIC_STORE_PATH = SDCARD + "/tuya/";
 
+    public static final String OUTPUT_PIC_FILENAME = PIC_STORE_PATH + "test.jpg";
+    public static final String CAMERA_PIC_FILENAME = PIC_STORE_PATH + "camera_pic.jpg";
 }

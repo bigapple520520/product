@@ -1,5 +1,6 @@
 package com.xuan.tuya;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -7,12 +8,14 @@ import android.widget.ImageButton;
 
 import com.xuan.tuya.common.Constants;
 import com.xuan.tuya.utils.FileUtils;
+import com.xuan.tuya.utils.ImageUtils;
 import com.xuan.tuya.utils.ToastUtils;
 import com.xuan.tuya.view.PointView;
 import com.xuan.tuya.view.TuyaPicView;
 import com.xuan.tuya.vinject.InjectView;
 
 public class TuyaMain extends BasicActivity {
+    private static final int REQUEST_OPERATE_TRANSLUCENT_ACTIVITY = 1;
 
     @InjectView(R.id.tuYaPicView)
     private TuyaPicView tuyaPicView;// 涂鸦的view
@@ -91,19 +94,6 @@ public class TuyaMain extends BasicActivity {
 
     private PointView lastSizebtn;
 
-    // 操作按钮
-    @InjectView(R.id.editPhotoBg)
-    private View editPhotoBg;
-
-    @InjectView(R.id.takePicBtn)
-    private Button takePicBtn;
-
-    @InjectView(R.id.localPicBtn)
-    private Button localPicBtn;
-
-    @InjectView(R.id.cancelBtn)
-    private Button cancelBtn;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,22 +102,12 @@ public class TuyaMain extends BasicActivity {
         initWidgits();
         initPenColorBtn();
         initPenSizeBtn();
-        initSelectPicBtn();
 
         lastColorBtn = colorBlack;
         colorBlack.setImageResource(R.drawable.doodle_pen_color_sel);
 
-        lastSizebtn = pen_size_4;
-        pen_size_4.setBackgroundResource(R.drawable.doodle_pen_size_sel);
-    }
-
-    private void initSelectPicBtn() {
-        cancelBtn.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editPhotoBg.setVisibility(View.GONE);
-            }
-        });
+        lastSizebtn = pen_size_3;
+        pen_size_3.setBackgroundResource(R.drawable.doodle_pen_size_sel);
     }
 
     private void initPenSizeBtn() {
@@ -135,7 +115,7 @@ public class TuyaMain extends BasicActivity {
         pen_size_1.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refreshSizeBtn(pen_size_1, 2);
+                refreshSizeBtn(pen_size_1, 4);
             }
         });
 
@@ -143,7 +123,7 @@ public class TuyaMain extends BasicActivity {
         pen_size_2.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refreshSizeBtn(pen_size_2, 4);
+                refreshSizeBtn(pen_size_2, 6);
             }
         });
 
@@ -151,7 +131,7 @@ public class TuyaMain extends BasicActivity {
         pen_size_3.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refreshSizeBtn(pen_size_3, 6);
+                refreshSizeBtn(pen_size_3, 8);
             }
         });
 
@@ -159,7 +139,7 @@ public class TuyaMain extends BasicActivity {
         pen_size_4.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refreshSizeBtn(pen_size_4, 8);
+                refreshSizeBtn(pen_size_4, 10);
             }
         });
 
@@ -167,7 +147,7 @@ public class TuyaMain extends BasicActivity {
         pen_size_5.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refreshSizeBtn(pen_size_5, 10);
+                refreshSizeBtn(pen_size_5, 12);
             }
         });
 
@@ -175,7 +155,7 @@ public class TuyaMain extends BasicActivity {
         pen_size_6.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refreshSizeBtn(pen_size_6, 12);
+                refreshSizeBtn(pen_size_6, 14);
             }
         });
     }
@@ -223,7 +203,10 @@ public class TuyaMain extends BasicActivity {
         picBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editPhotoBg.setVisibility(View.VISIBLE);
+                // editPhotoBg.setVisibility(View.VISIBLE);
+                Intent intent = new Intent();
+                intent.setClass(TuyaMain.this, OperateTranslucentActivity.class);
+                startActivityForResult(intent, REQUEST_OPERATE_TRANSLUCENT_ACTIVITY);
             }
         });
 
@@ -289,7 +272,7 @@ public class TuyaMain extends BasicActivity {
         });
     }
 
-    // 清除选中的勾勾
+    // 选画笔颜色
     private void refreshColorBtn(ImageButton curImageBtn, int colorResid) {
         if (null != lastColorBtn) {
             lastColorBtn.setImageDrawable(null);
@@ -302,6 +285,7 @@ public class TuyaMain extends BasicActivity {
         tuyaPicView.initPaint(getResources().getColor(colorResid), tuyaPicView.getPaint().getStrokeWidth());
     }
 
+    // 选画笔大小
     private void refreshSizeBtn(PointView curPointView, int penSize) {
         if (null != lastSizebtn) {
             lastSizebtn.setBackgroundDrawable(null);
@@ -312,6 +296,19 @@ public class TuyaMain extends BasicActivity {
 
         // 切换画笔
         tuyaPicView.initPaint(tuyaPicView.getPaint().getColor(), penSize);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (REQUEST_OPERATE_TRANSLUCENT_ACTIVITY == requestCode) {
+                String fileName = data.getStringExtra(OperateTranslucentActivity.RET_FILENAME);
+                tuyaPicView.initBgPicBitmap(ImageUtils.decodeSampledBitmapFromFile(fileName, tuyaPicView.getWidth(),
+                        tuyaPicView.getHeight()));
+            }
+        }
+
     }
 
 }

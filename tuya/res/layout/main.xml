@@ -2,7 +2,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:background="@color/color_translucent" >
     <!-- 标题 -->
     <LinearLayout
         android:id="@+id/title"
@@ -64,7 +65,8 @@
         <com.xuan.tuya.view.TuyaPicView
             android:id="@+id/tuYaPicView"
             android:layout_height="fill_parent"
-            android:layout_width="fill_parent">
+            android:layout_width="fill_parent"
+            android:background="@color/color_white">
         </com.xuan.tuya.view.TuyaPicView>
         <Button 
             android:id="@+id/clearBtn"
@@ -228,14 +230,14 @@
     </RelativeLayout>
     
     <!-- 调用摄像头或者加载图片按钮布局 -->
-    <RelativeLayout 
+    <RelativeLayout
         android:id="@+id/editPhotoBg"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@color/color_translucent"
         android:visibility="gone">
         <Button
-            android:id="@+id/takePicBtn"
+            android:id="@+id/localPicBtn"
             android:layout_width="fill_parent"
             android:layout_height="50dp"
             android:background="@drawable/actionsheet_top"
@@ -244,9 +246,9 @@
             android:textColor="@color/doodle_pan_blue"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_above="@+id/localPicBtn" />
+            android:layout_above="@+id/takePicBtn" />
         <Button
-            android:id="@+id/localPicBtn"
+            android:id="@+id/takePicBtn"
             android:layout_width="fill_parent"
             android:layout_height="50dp"
             android:background="@drawable/actionsheet_bottom"

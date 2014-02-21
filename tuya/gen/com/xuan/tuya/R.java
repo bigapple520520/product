@@ -83,7 +83,7 @@ public final class R {
         public static final int colorRed=0x7f09000f;
         public static final int colorYellow=0x7f09000d;
         public static final int editPhotoBg=0x7f09001c;
-        public static final int localPicBtn=0x7f09001e;
+        public static final int localPicBtn=0x7f09001d;
         public static final int menu_settings=0x7f090020;
         public static final int penOperate=0x7f090007;
         public static final int pen_color_btn=0x7f090011;
@@ -99,7 +99,7 @@ public final class R {
         public static final int picBtn=0x7f09001a;
         public static final int saveBtn=0x7f09001b;
         public static final int selectOperate=0x7f090004;
-        public static final int takePicBtn=0x7f09001d;
+        public static final int takePicBtn=0x7f09001e;
         public static final int title=0x7f090000;
         public static final int tuPian=0x7f090002;
         public static final int tuYaPicView=0x7f090005;
@@ -108,6 +108,7 @@ public final class R {
     }
     public static final class layout {
         public static final int main=0x7f030000;
+        public static final int operate_translucent_activity=0x7f030001;
     }
     public static final class menu {
         public static final int tuya=0x7f080000;
