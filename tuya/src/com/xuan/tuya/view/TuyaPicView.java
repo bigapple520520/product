@@ -23,6 +23,8 @@ public class TuyaPicView extends View {
     private static final float TOUCH_TOLERANCE = 4;// 路径纪录长度，例如在滑动中，点xy的坐标超过临时点坐标的这个值，就画线
     private static final int DEFAULT_COLOR = R.color.doodle_blank_bg;
 
+    private static final int DOUBLE_TIME = 500;
+
     private Bitmap mBgPicBitmap;
 
     private Bitmap mBitmap;
@@ -40,6 +42,10 @@ public class TuyaPicView extends View {
     // 布局高和宽
     private int screenWidth = 500;
     private int screenHeight = 500;
+
+    private long lastDownTime;
+    private MotionEvent lastDownEvent;
+    private DoubleClickListener doubleClickListener;
 
     public TuyaPicView(Context context) {
         super(context);
@@ -184,6 +190,21 @@ public class TuyaPicView extends View {
             mPath.moveTo(x, y);
             mX = x;
             mY = y;
+
+            // 双击事件的处理
+            long nowDownTime = System.currentTimeMillis();
+            if (nowDownTime - lastDownTime < DOUBLE_TIME) {
+                if (null != doubleClickListener) {
+                    doubleClickListener.doubleClick(lastDownEvent, event);
+                }
+
+                lastDownTime = 0;
+                lastDownEvent = null;
+            }
+            else {
+                lastDownTime = nowDownTime;
+                lastDownEvent = event;
+            }
             break;
         case MotionEvent.ACTION_MOVE:
             float dx = Math.abs(x - mX);
@@ -222,6 +243,14 @@ public class TuyaPicView extends View {
 
         public Path path;// 路径
         public Paint paint;// 画笔
+    }
+
+    public DoubleClickListener getDoubleClickListener() {
+        return doubleClickListener;
+    }
+
+    public void setDoubleClickListener(DoubleClickListener doubleClickListener) {
+        this.doubleClickListener = doubleClickListener;
     }
 
 }
