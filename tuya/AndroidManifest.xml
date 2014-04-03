@@ -13,17 +13,19 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.NoTitleBar" >
-        <activity
-            android:name=".TuyaMain">
+        <activity android:name=".DoodleMain">
+        </activity>
+        <activity android:name=".DoodleMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity 
+        <activity
             android:name=".OperateTranslucentActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name=".DoodleLineActivity" />
     </application>
 
 </manifest>

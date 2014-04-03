@@ -11,8 +11,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.xuan.tuya.common.Constants;
+import com.xuan.tuya.ioc.InjectView;
 import com.xuan.tuya.utils.ImageUtils;
-import com.xuan.tuya.vinject.InjectView;
 
 /**
  * 半透明Activity，显示操作界面

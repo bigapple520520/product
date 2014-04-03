@@ -62,12 +62,18 @@
         android:layout_width="fill_parent"
         android:layout_below="@+id/title"
         android:layout_above="@+id/selectOperate">
-        <com.xuan.tuya.view.TuyaPicView
-            android:id="@+id/tuYaPicView"
+        <RelativeLayout
+            android:id="@+id/doodleLayout"
             android:layout_height="fill_parent"
-            android:layout_width="fill_parent"
-            android:background="@color/color_white">
-        </com.xuan.tuya.view.TuyaPicView>
+            android:layout_width="fill_parent">
+            <!-- 
+            <com.xuan.tuya.view.DoodleLineView
+	            android:id="@+id/tuYaPicView"
+	            android:layout_height="fill_parent"
+	            android:layout_width="fill_parent"
+	            android:background="@color/color_white" />
+	             -->
+        </RelativeLayout>
         <Button 
             android:id="@+id/clearBtn"
             android:layout_height="40dp"

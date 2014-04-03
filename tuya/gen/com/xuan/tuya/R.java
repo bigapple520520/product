@@ -25,6 +25,7 @@ public final class R {
         public static final int doodle_pan_yellow=0x7f040007;
         public static final int doodle_save_btn_normal=0x7f040009;
         public static final int doodle_save_btn_pressed=0x7f04000a;
+        public static final int doodle_tab_text=0x7f04000c;
     }
     public static final class dimen {
         public static final int padding_large=0x7f050002;
@@ -44,71 +45,124 @@ public final class R {
         public static final int actionsheet_top=0x7f020009;
         public static final int actionsheet_top_normal=0x7f02000a;
         public static final int actionsheet_top_pressed=0x7f02000b;
-        public static final int doodle_clear=0x7f02000c;
-        public static final int doodle_clear_normal=0x7f02000d;
-        public static final int doodle_clear_pressed=0x7f02000e;
-        public static final int doodle_icon_back=0x7f02000f;
-        public static final int doodle_icon_back_normal=0x7f020010;
-        public static final int doodle_icon_back_pressed=0x7f020011;
-        public static final int doodle_icon_brush=0x7f020012;
-        public static final int doodle_icon_brush_normal=0x7f020013;
-        public static final int doodle_icon_brush_pressed=0x7f020014;
-        public static final int doodle_icon_picture=0x7f020015;
-        public static final int doodle_icon_picture_normal=0x7f020016;
-        public static final int doodle_icon_picture_pressed=0x7f020017;
-        public static final int doodle_pan_size=0x7f020018;
-        public static final int doodle_pen_color=0x7f020019;
-        public static final int doodle_pen_color_sel=0x7f02001a;
-        public static final int doodle_pen_size_sel=0x7f02001b;
-        public static final int doodle_pen_thickness=0x7f02001c;
-        public static final int doodle_pen_thickness_normal=0x7f02001d;
-        public static final int doodle_pen_thickness_pressed=0x7f02001e;
-        public static final int doodle_pickbrush_back=0x7f02001f;
-        public static final int doodle_pickbrush_bg=0x7f020020;
-        public static final int doodle_title_current=0x7f020021;
-        public static final int ic_action_search=0x7f020022;
-        public static final int ic_launcher=0x7f020023;
-        public static final int save_btn=0x7f020024;
-        public static final int tuya_bg=0x7f020025;
+        public static final int bg_imgedit=0x7f02000c;
+        public static final int bg_imgedit_sel=0x7f02000d;
+        public static final int btn_back=0x7f02000e;
+        public static final int btn_back_normal=0x7f02000f;
+        public static final int btn_back_pressed=0x7f020010;
+        public static final int btn_top=0x7f020011;
+        public static final int btn_top_normal=0x7f020012;
+        public static final int btn_top_pressed=0x7f020013;
+        public static final int doodle_clear=0x7f020014;
+        public static final int doodle_clear_normal=0x7f020015;
+        public static final int doodle_clear_pressed=0x7f020016;
+        public static final int doodle_icon_back=0x7f020017;
+        public static final int doodle_icon_back_normal=0x7f020018;
+        public static final int doodle_icon_back_pressed=0x7f020019;
+        public static final int doodle_icon_brush=0x7f02001a;
+        public static final int doodle_icon_brush_normal=0x7f02001b;
+        public static final int doodle_icon_brush_pressed=0x7f02001c;
+        public static final int doodle_icon_picture=0x7f02001d;
+        public static final int doodle_icon_picture_normal=0x7f02001e;
+        public static final int doodle_icon_picture_pressed=0x7f02001f;
+        public static final int doodle_pan_size=0x7f020020;
+        public static final int doodle_pen_color=0x7f020021;
+        public static final int doodle_pen_color_sel=0x7f020022;
+        public static final int doodle_pen_size_sel=0x7f020023;
+        public static final int doodle_pen_thickness=0x7f020024;
+        public static final int doodle_pen_thickness_normal=0x7f020025;
+        public static final int doodle_pen_thickness_pressed=0x7f020026;
+        public static final int doodle_pickbrush_back=0x7f020027;
+        public static final int doodle_pickbrush_bg=0x7f020028;
+        public static final int doodle_title_current=0x7f020029;
+        public static final int header_bg=0x7f02002a;
+        public static final int ic_action_search=0x7f02002b;
+        public static final int ic_launcher=0x7f02002c;
+        public static final int line_imgedit=0x7f02002d;
+        public static final int save_btn=0x7f02002e;
+        public static final int tab_bg=0x7f02002f;
+        public static final int tabbtn0_imgedit=0x7f020030;
+        public static final int tabbtn0_imgedit_normal=0x7f020031;
+        public static final int tabbtn0_imgedit_sel=0x7f020032;
+        public static final int tabbtn1_imgedit=0x7f020033;
+        public static final int tabbtn1_imgedit_normal=0x7f020034;
+        public static final int tabbtn1_imgedit_sel=0x7f020035;
+        public static final int tabbtn2_imgedit=0x7f020036;
+        public static final int tabbtn2_imgedit_normal=0x7f020037;
+        public static final int tabbtn2_imgedit_sel=0x7f020038;
+        public static final int tabbtn3_imgedit=0x7f020039;
+        public static final int tabbtn3_imgedit_normal=0x7f02003a;
+        public static final int tabbtn3_imgedit_sel=0x7f02003b;
+        public static final int tabbtn4_imgedit=0x7f02003c;
+        public static final int tabbtn4_imgedit_normal=0x7f02003d;
+        public static final int tabbtn4_imgedit_sel=0x7f02003e;
+        public static final int tabbtn5_imgedit_normal=0x7f02003f;
+        public static final int tabbtn5_imgedit_sel=0x7f020040;
+        public static final int tabbtn7_imgedit=0x7f020041;
+        public static final int tabbtn7_imgedit_normal=0x7f020042;
+        public static final int tabbtn7_imgedit_sel=0x7f020043;
+        public static final int test=0x7f020044;
+        public static final int tuya_bg=0x7f020045;
     }
     public static final class id {
-        public static final int backBtn=0x7f090019;
-        public static final int brushBtn=0x7f090018;
-        public static final int cancelBtn=0x7f09001f;
-        public static final int clearBtn=0x7f090006;
-        public static final int colorBlack=0x7f09000a;
-        public static final int colorBlue=0x7f09000b;
-        public static final int colorGreen=0x7f09000c;
-        public static final int colorOrange=0x7f09000e;
-        public static final int colorRed=0x7f09000f;
-        public static final int colorYellow=0x7f09000d;
-        public static final int editPhotoBg=0x7f09001c;
-        public static final int localPicBtn=0x7f09001d;
-        public static final int menu_settings=0x7f090020;
-        public static final int penOperate=0x7f090007;
-        public static final int pen_color_btn=0x7f090011;
-        public static final int pen_operate_color_layout=0x7f090008;
-        public static final int pen_operate_size_layout=0x7f090010;
-        public static final int pen_size_1=0x7f090017;
-        public static final int pen_size_2=0x7f090016;
-        public static final int pen_size_3=0x7f090015;
-        public static final int pen_size_4=0x7f090014;
-        public static final int pen_size_5=0x7f090013;
-        public static final int pen_size_6=0x7f090012;
-        public static final int pen_size_btn=0x7f090009;
-        public static final int picBtn=0x7f09001a;
-        public static final int saveBtn=0x7f09001b;
-        public static final int selectOperate=0x7f090004;
-        public static final int takePicBtn=0x7f09001e;
-        public static final int title=0x7f090000;
-        public static final int tuPian=0x7f090002;
-        public static final int tuYaPicView=0x7f090005;
-        public static final int tuyaBg=0x7f090003;
-        public static final int wenZi=0x7f090001;
+        public static final int backBtn=0x7f09002c;
+        public static final int brushBtn=0x7f09002b;
+        public static final int cancelBtn=0x7f090032;
+        public static final int clearBtn=0x7f090019;
+        public static final int colorBlack=0x7f09001d;
+        public static final int colorBlue=0x7f09001e;
+        public static final int colorGreen=0x7f09001f;
+        public static final int colorOrange=0x7f090021;
+        public static final int colorRed=0x7f090022;
+        public static final int colorYellow=0x7f090020;
+        public static final int doodleLayout=0x7f090004;
+        public static final int editPhotoBg=0x7f09002f;
+        public static final int frameHead=0x7f090000;
+        public static final int localPicBtn=0x7f090030;
+        public static final int menu_settings=0x7f090033;
+        public static final int operateLayout=0x7f090005;
+        public static final int penBack=0x7f090009;
+        public static final int penBtn=0x7f090008;
+        public static final int penOperate=0x7f09001a;
+        public static final int pen_color_btn=0x7f090024;
+        public static final int pen_operate_color_layout=0x7f09001b;
+        public static final int pen_operate_size_layout=0x7f090023;
+        public static final int pen_size_1=0x7f09002a;
+        public static final int pen_size_2=0x7f090029;
+        public static final int pen_size_3=0x7f090028;
+        public static final int pen_size_4=0x7f090027;
+        public static final int pen_size_5=0x7f090026;
+        public static final int pen_size_6=0x7f090025;
+        public static final int pen_size_btn=0x7f09001c;
+        public static final int picBtn=0x7f09002d;
+        public static final int resetImg=0x7f090007;
+        public static final int resetLayout=0x7f090006;
+        public static final int returnBtn=0x7f090001;
+        public static final int rightBtn=0x7f090003;
+        public static final int saveBtn=0x7f09002e;
+        public static final int selectOperate=0x7f090018;
+        public static final int tab0=0x7f09000c;
+        public static final int tab0Layout=0x7f09000b;
+        public static final int tab1=0x7f09000e;
+        public static final int tab1Layout=0x7f09000d;
+        public static final int tab2=0x7f090010;
+        public static final int tab2Layout=0x7f09000f;
+        public static final int tab3=0x7f090012;
+        public static final int tab3Layout=0x7f090011;
+        public static final int tab4=0x7f090014;
+        public static final int tab4Layout=0x7f090013;
+        public static final int tabs=0x7f09000a;
+        public static final int takePicBtn=0x7f090031;
+        public static final int title=0x7f090002;
+        public static final int tuPian=0x7f090016;
+        public static final int tuyaBg=0x7f090017;
+        public static final int wenZi=0x7f090015;
     }
     public static final class layout {
-        public static final int main=0x7f030000;
-        public static final int operate_translucent_activity=0x7f030001;
+        public static final int doodle_line=0x7f030000;
+        public static final int doodle_main=0x7f030001;
+        public static final int main=0x7f030002;
+        public static final int operate_translucent_activity=0x7f030003;
     }
     public static final class menu {
         public static final int tuya=0x7f080000;
@@ -116,13 +170,20 @@ public final class R {
     public static final class string {
         public static final int app_name=0x7f060000;
         public static final int bao_cun=0x7f060001;
-        public static final int cong_xiao_cxz=0x7f060008;
-        public static final int menu_settings=0x7f060005;
-        public static final int no_word=0x7f060004;
-        public static final int pai_zhao=0x7f060007;
-        public static final int qu_xiao=0x7f060006;
-        public static final int tu_pian=0x7f060003;
-        public static final int wen_zi=0x7f060002;
+        public static final int chong_zhi=0x7f06000b;
+        public static final int cong_xiao_cxz=0x7f060007;
+        public static final int fan_hui=0x7f060008;
+        public static final int jian_qie=0x7f06000d;
+        public static final int menu_settings=0x7f060004;
+        public static final int no_word=0x7f060003;
+        public static final int pai_zhao=0x7f060006;
+        public static final int qu_xiao=0x7f060005;
+        public static final int que_ding=0x7f06000a;
+        public static final int tu_pian=0x7f060002;
+        public static final int tu_pian_bj=0x7f060009;
+        public static final int tu_ya=0x7f06000e;
+        public static final int wen_zi=0x7f06000f;
+        public static final int xuan_zhuan=0x7f06000c;
     }
     public static final class style {
         /** 
@@ -140,5 +201,18 @@ public final class R {
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f070001;
+        public static final int doodle_tab_layout_style=0x7f070006;
+        /**  用作头部的标题 
+         */
+        public static final int font1=0x7f070002;
+        /**  标题名称 
+         */
+        public static final int textview_style_0=0x7f070004;
+        /**  头部返回按钮 
+         */
+        public static final int top_backbtn_style=0x7f070003;
+        /**  头部右边按钮 
+         */
+        public static final int top_rightbtn_style=0x7f070005;
     }
 }
