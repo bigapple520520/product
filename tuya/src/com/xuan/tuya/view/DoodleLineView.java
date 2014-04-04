@@ -6,7 +6,6 @@ import java.util.List;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
@@ -65,7 +64,7 @@ public class DoodleLineView extends View {
 
     private void init() {
         scroller = new Scroller(getContext());
-        initPaint(Color.BLACK, 8);
+        initPaint(getContext().getResources().getColor(R.color.doodle_pen_color_ys1), 8);
     }
 
     /**

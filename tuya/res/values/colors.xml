@@ -19,6 +19,15 @@
     
     <color name="doodle_blank_bg">#F0F0F0</color>
     
-    <color name="doodle_tab_text">#696969</color>    
+    <color name="doodle_tab_text">#696969</color>
+    <color name="doodle_select_pen_bg">#15191d</color>  
     
+    <color name="doodle_pen_color_ys1">#000000</color>
+    <color name="doodle_pen_color_ys2">#ff0200</color>
+    <color name="doodle_pen_color_ys3">#fd7301</color>
+    <color name="doodle_pen_color_ys4">#ffff00</color>
+    <color name="doodle_pen_color_ys5">#0da000</color>
+    <color name="doodle_pen_color_ys6">#023bb0</color>
+    
+    <color name="doodle_pen_point">#7a7a7a</color>
 </resources>

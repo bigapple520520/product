@@ -57,7 +57,7 @@ public class PointView extends View {
     public void initPaint() {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        mPaint.setColor(getResources().getColor(R.color.doodle_pan_black));
+        mPaint.setColor(getResources().getColor(R.color.doodle_pen_point));
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);// 设置外边缘
         mPaint.setStrokeCap(Paint.Cap.ROUND);// 形状

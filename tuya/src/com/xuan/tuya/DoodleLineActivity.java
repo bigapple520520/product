@@ -10,10 +10,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.xuan.tuya.ioc.InjectView;
 import com.xuan.tuya.view.DoodleLineView;
+import com.xuan.tuya.view.PointView;
 
 /**
  * 涂鸦画线
@@ -28,13 +30,41 @@ public class DoodleLineActivity extends BasicActivity {
     @InjectView(R.id.doodleLayout)
     private RelativeLayout doodleLayout;
 
+    @InjectView(R.id.resetLayout)
+    private RelativeLayout resetLayout;
+
     @InjectView(R.id.penBtn)
     private ImageView penBtn;
 
     @InjectView(R.id.penBack)
     private ImageView penBack;
 
+    @InjectView(R.id.penOperate)
+    private RelativeLayout penOperate;
+
+    @InjectView(R.id.penColorOperate)
+    private LinearLayout penColorOperate;
+
+    @InjectView(R.id.penSizeOperate)
+    private LinearLayout penSizeOperate;
+
+    @InjectView(R.id.selectPenColor)
+    private Button selectPenColor;
+
+    @InjectView(R.id.selectPenSize)
+    private Button selectPenSize;
+
     private DoodleLineView doodleLineView;
+
+    // 画笔的颜色
+    private RelativeLayout[] colorLayouts = new RelativeLayout[6];
+    private int[] penColors = new int[6];
+    private int penColorPosition = 0;
+
+    // 画笔大小
+    private PointView[] pointViews = new PointView[6];
+    private int[] penSizes = { 14, 12, 10, 8, 6, 4 };
+    private int penSizePosition = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +75,87 @@ public class DoodleLineActivity extends BasicActivity {
         doodleLineView.initBgPicBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.test));
         doodleLayout.addView(doodleLineView);
 
+        initWidgits();
+        initPenColor();
+        initPenSize();
+
+        doodleLineView.initPaint(penColors[penColorPosition], penSizes[penSizePosition]);
+        colorLayouts[penColorPosition].setBackgroundResource(R.drawable.icon_imgedit_graffiti_sel);
+        pointViews[penSizePosition].setBackgroundResource(R.drawable.icon_imgedit_graffiti_sel);
+    }
+
+    private void initPenSize() {
+        selectPenColor.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                penSizeOperate.setVisibility(View.GONE);
+                penColorOperate.setVisibility(View.VISIBLE);
+            }
+        });
+
+        pointViews[0] = (PointView) findViewById(R.id.penSize1);
+        pointViews[1] = (PointView) findViewById(R.id.penSize2);
+        pointViews[2] = (PointView) findViewById(R.id.penSize3);
+        pointViews[3] = (PointView) findViewById(R.id.penSize4);
+        pointViews[4] = (PointView) findViewById(R.id.penSize5);
+        pointViews[5] = (PointView) findViewById(R.id.penSize6);
+
+        for (int i = 0; i < 6; i++) {
+            final int tempI = i;
+            pointViews[i].setStrokeWidth(penSizes[i]);
+            pointViews[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    doodleLineView.initPaint(penColors[penColorPosition], penSizes[tempI]);
+                    pointViews[penSizePosition].setBackgroundDrawable(null);
+                    pointViews[tempI].setBackgroundResource(R.drawable.icon_imgedit_graffiti_sel);
+                    penSizePosition = tempI;
+                }
+            });
+        }
+    }
+
+    private void initPenColor() {
+        selectPenSize.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                penSizeOperate.setVisibility(View.VISIBLE);
+                penColorOperate.setVisibility(View.GONE);
+            }
+        });
+
+        colorLayouts[0] = (RelativeLayout) findViewById(R.id.color1Layout);
+        colorLayouts[1] = (RelativeLayout) findViewById(R.id.color2Layout);
+        colorLayouts[2] = (RelativeLayout) findViewById(R.id.color3Layout);
+        colorLayouts[3] = (RelativeLayout) findViewById(R.id.color4Layout);
+        colorLayouts[4] = (RelativeLayout) findViewById(R.id.color5Layout);
+        colorLayouts[5] = (RelativeLayout) findViewById(R.id.color6Layout);
+
+        penColors[0] = getResources().getColor(R.color.doodle_pen_color_ys1);
+        penColors[1] = getResources().getColor(R.color.doodle_pen_color_ys2);
+        penColors[2] = getResources().getColor(R.color.doodle_pen_color_ys3);
+        penColors[3] = getResources().getColor(R.color.doodle_pen_color_ys4);
+        penColors[4] = getResources().getColor(R.color.doodle_pen_color_ys5);
+        penColors[5] = getResources().getColor(R.color.doodle_pen_color_ys6);
+
+        for (int i = 0; i < 6; i++) {
+            final int tempI = i;
+            colorLayouts[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (tempI != penColorPosition) {
+                        doodleLineView.initPaint(penColors[tempI], penSizes[penSizePosition]);
+                        colorLayouts[penColorPosition].setBackgroundDrawable(null);
+                        colorLayouts[tempI].setBackgroundResource(R.drawable.icon_imgedit_graffiti_sel);
+                        penColorPosition = tempI;
+                    }
+                }
+            });
+        }
+    }
+
+    private void initWidgits() {
+        // 选中涂鸦或者移动图片
         penBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,12 +163,30 @@ public class DoodleLineActivity extends BasicActivity {
                     // 设置移动状态
                     penBtn.setImageResource(R.drawable.tabbtn5_imgedit_normal);
                     doodleLineView.setDraw(false);
+                    penOperate.setVisibility(View.GONE);
                 }
                 else {
                     // 设置涂鸦状态
                     penBtn.setImageResource(R.drawable.tabbtn5_imgedit_sel);
                     doodleLineView.setDraw(true);
+                    penOperate.setVisibility(View.VISIBLE);
                 }
+            }
+        });
+
+        // 重置
+        resetLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doodleLineView.redo();
+            }
+        });
+
+        // 撤销上一步
+        penBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doodleLineView.undo();
             }
         });
     }

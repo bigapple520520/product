@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.xuan.tuya.ioc.InjectView;
+import com.xuan.tuya.view.ShowImageView;
 
 /**
  * 截图界面
@@ -34,11 +35,15 @@ public class DoodleMainActivity extends BasicActivity {
     @InjectView(R.id.tab4Layout)
     private RelativeLayout tab4Layout;
 
+    @InjectView(R.id.image)
+    private ShowImageView image;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.doodle_main);
 
+        image.setImageResource(R.drawable.test);
         initTab();
     }
 
