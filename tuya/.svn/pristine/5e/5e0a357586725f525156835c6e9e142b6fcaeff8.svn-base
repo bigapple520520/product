@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 半透明 -->
+    <color name="color_translucent">#60000000</color>
+    
+    <color name="color_white">#ffffff</color>
+    
+    <color name="doodle_operate_bg">#e8e8e8</color>
+    
+    <color name="doodle_pan_black">#000000</color>
+    <color name="doodle_pan_red">#ff0000</color>
+    <color name="doodle_pan_green">#66CD00</color>
+    <color name="doodle_pan_blue">#0189c7</color>
+    <color name="doodle_pan_yellow">#FFD700</color>
+    <color name="doodle_pan_orange">#FF7F00</color>
+    
+    <color name="doodle_save_btn_normal">#33B5E5</color>
+    <color name="doodle_save_btn_pressed">#0099CC</color>
+    
+    <color name="doodle_blank_bg">#F0F0F0</color>
+    
+    <color name="doodle_tab_text">#696969</color>
+    <color name="doodle_select_pen_bg">#15191d</color>  
+    
+    <color name="doodle_pen_color_ys1">#000000</color>
+    <color name="doodle_pen_color_ys2">#ff0200</color>
+    <color name="doodle_pen_color_ys3">#fd7301</color>
+    <color name="doodle_pen_color_ys4">#ffff00</color>
+    <color name="doodle_pen_color_ys5">#0da000</color>
+    <color name="doodle_pen_color_ys6">#023bb0</color>
+    
+    <color name="doodle_pen_point">#7a7a7a</color>
+</resources>

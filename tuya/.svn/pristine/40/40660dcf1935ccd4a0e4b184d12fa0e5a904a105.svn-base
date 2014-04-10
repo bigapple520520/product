@@ -1,0 +1,63 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+    
+    <!-- 用作头部的标题 -->
+    <style name="font1" parent="android:Widget.TextView">  
+        <item name="android:textSize">20sp</item>  
+        <item name="android:textColor">#ffffff</item>  
+    </style>
+    
+    <!-- 头部返回按钮 -->
+    <style name="top_backbtn_style">
+        <item name="android:layout_width">60dp</item>  
+        <item name="android:layout_height">30dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/color_white</item>
+        <item name="android:background">@drawable/btn_back</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+    
+    <!-- 标题名称 -->
+    <style name="textview_style_0" parent="font1">  
+        <item name="android:layout_width">wrap_content</item>  
+        <item name="android:layout_height">wrap_content</item>  
+        <item name="android:gravity">center_vertical</item>  
+        <item name="android:textStyle">bold</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+    
+    <!-- 头部右边按钮 -->
+    <style name="top_rightbtn_style">
+        <item name="android:layout_width">wrap_content</item>  
+        <item name="android:layout_height">30dp</item>
+        <item name="android:background">@drawable/btn_top</item>
+        <item name="android:textColor">@color/color_white</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+    
+    <style name="doodle_tab_layout_style">
+        <item name="android:layout_width" >0dp</item>
+        <item name="android:layout_height" >fill_parent</item>
+        <item name="android:layout_weight" >0.2</item>
+        <item name="android:background" >@drawable/bg_imgedit</item>
+        <item name="android:clickable" >true</item>
+        <item name="android:paddingTop">4dp</item>
+    </style>
+</resources>
