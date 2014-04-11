@@ -24,6 +24,7 @@
         <activity android:name=".DoodleMainActivity" />
         <activity android:name=".DoodleLineActivity" />
         <activity android:name=".DoodleTextActivity" />
+        <activity android:name=".view.crop.CropImage" />
     </application>
 
 </manifest>
