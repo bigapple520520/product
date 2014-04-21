@@ -1,0 +1,272 @@
+/* 
+ * @(#)InputLayout.java    Created on 2014-4-8
+ * Copyright (c) 2014 ZDSoft Networks, Inc. All rights reserved.
+ * $Id$
+ */
+package com.xuan.tuya.view;
+
+import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+
+import com.xuan.tuya.R;
+
+/**
+ * 输入布局
+ * 
+ * @author xuan
+ * @version $Revision: 1.0 $, $Date: 2014-4-8 下午6:39:28 $
+ */
+public class InputLayout extends ViewGroup {
+    private static final int DEFAULT_PADDING_DP = 10;
+    private int padding;
+    private static final int DEFAULT_BUTTON_SIZE_DP = 20;
+    private int buttonSize;
+
+    private EditText editText;
+    private Button cancelBtn;
+    private Button dragBtn;
+
+    private int pLeft;
+    private int pTop;
+    private int pRight;
+    private int pBottom;
+
+    private int textSize;
+    private int textColor;
+
+    private NeedRequestLayoutListener needRequestLayoutListener;
+    private int dragTempX;
+    private int dragTempY;
+
+    public InputLayout(Context context) {
+        super(context);
+        init();
+    }
+
+    public InputLayout(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
+
+    public InputLayout(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        init();
+    }
+
+    private void init() {
+        // 输入框位置和按钮大小
+        final float density = getContext().getResources().getDisplayMetrics().density;
+        padding = (int) (DEFAULT_PADDING_DP * density);
+        buttonSize = (int) (DEFAULT_BUTTON_SIZE_DP * density);
+
+        editText = new EditText(getContext());
+
+        cancelBtn = new Button(getContext());
+        dragBtn = new Button(getContext());
+
+        editText.setBackgroundResource(R.drawable.wz_wzsr);
+        cancelBtn.setBackgroundResource(R.drawable.wz_close);
+        dragBtn.setBackgroundResource(R.drawable.wz_fdtd);
+
+        addView(editText);
+        addView(cancelBtn);
+        addView(dragBtn);
+
+        editText.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    editText.setBackgroundResource(R.drawable.wz_wzsr);
+                    cancelBtn.setVisibility(View.VISIBLE);
+                    dragBtn.setVisibility(View.VISIBLE);
+                }
+                else {
+                    editText.setBackgroundDrawable(null);
+                    cancelBtn.setVisibility(View.GONE);
+                    dragBtn.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        dragBtn.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                int x = (int) event.getX();
+                int y = (int) event.getY();
+
+                switch (action) {
+                case MotionEvent.ACTION_DOWN:
+                    dragTempX = x;
+                    dragTempY = y;
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    int deltaX = x - dragTempX;
+                    int deltaY = y - dragTempY;
+
+                    pRight += deltaX;
+                    pBottom += deltaY;
+
+                    dragTempX = x;
+                    dragTempY = y;
+
+                    // 控制输入框的宽和高
+                    if (null != needRequestLayoutListener) {
+                        needRequestLayoutListener.needRequestLayout();
+
+                        // 让显示区域适应拉伸后的高宽，有更好的方法请说
+                        editText.setText(editText.getText().toString());
+                    }
+
+                    break;
+                }
+
+                return true;
+            }
+        });
+
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        if (null != editText) {
+            editText.layout(padding, padding, getWidth() - padding, getHeight() - padding);
+            // LogUtils.d("wwwwwww:" + (getWidth() - padding) + "----hhhhhhhhhhhh:" + (getHeight() - padding));
+            // LogUtils.d("--------------------------------" + editText.getWidth());
+        }
+
+        if (null != cancelBtn) {
+            cancelBtn.layout(getWidth() - buttonSize, 0, getWidth(), buttonSize);
+        }
+
+        if (null != dragBtn) {
+            dragBtn.layout(getWidth() - buttonSize, getHeight() - buttonSize, getWidth(), getHeight());
+        }
+    }
+
+    /**
+     * 设置位置
+     * 
+     * @param left
+     * @param top
+     * @param right
+     * @param bottom
+     */
+    public void setPosition(int left, int top, int right, int bottom) {
+        this.pLeft = left;
+        this.pTop = top;
+        this.pRight = right;
+        this.pBottom = bottom;
+    }
+
+    public EditText getEditText() {
+        return editText;
+    }
+
+    public void setEditText(EditText editText) {
+        this.editText = editText;
+    }
+
+    public Button getCancelBtn() {
+        return cancelBtn;
+    }
+
+    public void setCancelBtn(Button cancelBtn) {
+        this.cancelBtn = cancelBtn;
+    }
+
+    public Button getDragBtn() {
+        return dragBtn;
+    }
+
+    public void setDragBtn(Button dragBtn) {
+        this.dragBtn = dragBtn;
+    }
+
+    public int getpLeft() {
+        return pLeft;
+    }
+
+    public void setpLeft(int pLeft) {
+        this.pLeft = pLeft;
+    }
+
+    public int getpTop() {
+        return pTop;
+    }
+
+    public void setpTop(int pTop) {
+        this.pTop = pTop;
+    }
+
+    public int getpRight() {
+        return pRight;
+    }
+
+    public void setpRight(int pRight) {
+        this.pRight = pRight;
+    }
+
+    public int getpBottom() {
+        return pBottom;
+    }
+
+    public void setpBottom(int pBottom) {
+        this.pBottom = pBottom;
+    }
+
+    public int getTextSize() {
+        return textSize;
+    }
+
+    public void setTextSize(int textSize) {
+        this.textSize = textSize;
+    }
+
+    public int getTextColor() {
+        return textColor;
+    }
+
+    public void setTextColor(int textColor) {
+        this.textColor = textColor;
+    }
+
+    public NeedRequestLayoutListener getNeedRequestLayoutListener() {
+        return needRequestLayoutListener;
+    }
+
+    public void setNeedRequestLayoutListener(NeedRequestLayoutListener needRequestLayoutListener) {
+        this.needRequestLayoutListener = needRequestLayoutListener;
+    }
+
+    /**
+     * 需要重新布局调整位置
+     * 
+     * @author xuan
+     * @version $Revision: 1.0 $, $Date: 2014-4-10 下午3:22:53 $
+     */
+    public interface NeedRequestLayoutListener {
+        public void needRequestLayout();
+    }
+
+}
