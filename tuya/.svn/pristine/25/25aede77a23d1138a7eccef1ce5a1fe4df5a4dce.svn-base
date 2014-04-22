@@ -25,7 +25,7 @@ import com.xuan.tuya.R;
  * @version $Revision: 1.0 $, $Date: 2014-4-11 下午3:43:23 $
  */
 public class HighlightView {
-    View mContext;// 图片ImageView
+    View mContext;
     Path mPath;
     Rect mViewDrawingRect = new Rect();
 
