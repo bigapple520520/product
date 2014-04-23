@@ -1,0 +1,199 @@
+/* 
+ * @(#)CropImage.java    Created on 2014-4-11
+ * Copyright (c) 2014 ZDSoft Networks, Inc. All rights reserved.
+ * $Id$
+ */
+package com.xuan.tuya.view.crop;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+
+import com.xuan.tuya.R;
+import com.xuan.tuya.common.Constants;
+import com.xuan.tuya.utils.FileUtils;
+import com.xuan.tuya.utils.LogUtils;
+import com.xuan.tuya.utils.ToastUtils;
+
+/**
+ * 截图界面
+ * 
+ * @author xuan
+ * @version $Revision: 1.0 $, $Date: 2014-4-11 下午3:54:58 $
+ */
+public class CropImage extends Activity {
+
+    // 截取的宽高比，例如要设置正方形就可以设置：mAspectX=1，mAspectY=1
+    private int mAspectX = 0;
+    private int mAspectY = 0;
+
+    // 可以设置固定的输入或者输出宽高
+    private int mOutputX = 0;
+    private int mOutputY = 0;
+
+    private CropImageView mImageView;
+
+    private Bitmap mBitmap;// 原图
+    private Bitmap mCroppedImage;// 裁剪后保存的图
+
+    private HighlightView mCrop;// 裁剪区域
+
+    private Handler mHandler = new Handler();
+
+    @Override
+    public void onCreate(Bundle icicle) {
+        super.onCreate(icicle);
+        setContentView(R.layout.cropimage);
+        mImageView = (CropImageView) findViewById(R.id.image);
+        mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test2).copy(
+                android.graphics.Bitmap.Config.ARGB_8888, true);
+        try {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mImageView.setImageBitmapResetBase(mBitmap, true, true);
+                    if (mImageView.getScale() == 1F) {
+                        mImageView.center(true, true, false);
+                    }
+                    new Thread(mRunFaceDetection).start();
+                }
+            }, 100);
+        }
+        catch (Exception e) {
+            LogUtils.e("图片加载失败，原因：" + e);
+            finish();
+        }
+
+        // 取消
+        findViewById(R.id.discard).setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        // 保存
+        findViewById(R.id.save).setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mCroppedImage == null) {
+                    if (mCrop == null) {
+                        ToastUtils.displayTextShort(CropImage.this, "截取区域为空");
+                        return;
+                    }
+
+                    Rect r = mCrop.getCropRect();
+                    int width = r.width();
+                    int height = r.height();
+
+                    mCroppedImage = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+                    Canvas c1 = new Canvas(mCroppedImage);
+                    c1.drawBitmap(mBitmap, r, new Rect(0, 0, width, height), null);
+                }
+
+                // 输出的截取图片由自己定义，如果比例不对，会被截取掉
+                if (mOutputX != 0 && mOutputY != 0) {
+                    Bitmap b = Bitmap.createBitmap(mOutputX, mOutputY, Bitmap.Config.RGB_565);
+                    Canvas c1 = new Canvas(b);
+
+                    Rect r = mCrop.getCropRect();
+                    int left = (mOutputX / 2) - (r.width() / 2);
+                    int top = (mOutputY / 2) - (r.width() / 2);
+                    c1.drawBitmap(mBitmap, r, new Rect(left, top, left + r.width(), top + r.height()), null);
+
+                    mCroppedImage = b;
+                }
+
+                // 保存图片，如果耗时考虑起线程保存
+                OutputStream outputStream = null;
+                try {
+                    outputStream = new FileOutputStream(Constants.CROP_PIC_TEMP);
+                    FileUtils.initParentDir(Constants.CROP_PIC_TEMP);
+                    mCroppedImage.compress(Bitmap.CompressFormat.JPEG, 75, outputStream);
+                    ToastUtils.displayTextShort(CropImage.this, "图片已经保存到：" + Constants.CROP_PIC_TEMP);
+                }
+                catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                finally {
+                    if (outputStream != null) {
+                        try {
+                            outputStream.close();
+                        }
+                        catch (IOException ex) {
+                        }
+                    }
+                }
+                CropImage.this.finish();
+            }
+        });
+    }
+
+    /**
+     * 脸部检测任务
+     */
+    private Runnable mRunFaceDetection = new Runnable() {
+        private Matrix mImageMatrix;
+
+        private HighlightView makeHighlightView() {
+            return new HighlightView(mImageView);
+        }
+
+        private void makeDefault() {
+            HighlightView hv = makeHighlightView();
+
+            int width = mBitmap.getWidth();
+            int height = mBitmap.getHeight();
+
+            Rect imageRect = new Rect(0, 0, width, height);
+
+            // make the default size about 4/5 of the width or height
+            int cropWidth = Math.min(width, height) * 4 / 5;
+            int cropHeight = cropWidth;
+
+            if (mAspectX != 0 && mAspectY != 0) {
+                if (mAspectX > mAspectY) {
+                    cropHeight = cropWidth * mAspectY / mAspectX;
+                }
+                else {
+                    cropWidth = cropHeight * mAspectX / mAspectY;
+                }
+            }
+
+            int x = (width - cropWidth) / 2;
+            int y = (height - cropHeight) / 2;
+
+            RectF cropRect = new RectF(x, y, x + cropWidth, y + cropHeight);
+            hv.setup(mImageMatrix, imageRect, cropRect, false, mAspectX != 0 && mAspectY != 0);
+            mImageView.add(hv);
+        }
+
+        @Override
+        public void run() {
+            mImageMatrix = mImageView.getImageMatrix();
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    makeDefault();
+                    mImageView.invalidate();
+                    if (mImageView.mHighlightViews.size() == 1) {
+                        mCrop = mImageView.mHighlightViews.get(0);
+                        mCrop.setFocus(true);
+                    }
+                }
+            });
+        }
+    };
+
+}

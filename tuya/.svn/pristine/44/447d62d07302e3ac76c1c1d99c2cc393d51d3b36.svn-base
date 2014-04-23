@@ -11,28 +11,29 @@ import java.io.OutputStream;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.xuan.tuya.R;
 import com.xuan.tuya.common.Constants;
+import com.xuan.tuya.utils.BitmapDecoder;
 import com.xuan.tuya.utils.FileUtils;
+import com.xuan.tuya.utils.LogUtils;
 import com.xuan.tuya.utils.ToastUtils;
 
 /**
+ * 截图界面
+ * 
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2014-4-11 下午3:54:58 $
  */
-public class CropImage extends Activity {
-    private static final String TAG = "CropImage";
-    private Bitmap.CompressFormat mSaveFormat = Bitmap.CompressFormat.JPEG; // only used with mSaveUri
+public class CropImageActivity extends Activity {
 
     // 截取的宽高比，例如要设置正方形就可以设置：mAspectX=1，mAspectY=1
     private int mAspectX = 0;
@@ -42,24 +43,44 @@ public class CropImage extends Activity {
     private int mOutputX = 0;
     private int mOutputY = 0;
 
-    public boolean mWaitingToPick;
-
     private CropImageView mImageView;
 
-    Bitmap mBitmap;
-    Bitmap mCroppedImage;
+    private Bitmap mBitmap;// 原图
+    private Bitmap mCroppedImage;// 裁剪后保存的图
 
     private HighlightView mCrop;// 裁剪区域
 
     private Handler mHandler = new Handler();
+
+    // 输入输出文件路径
+    public static final String PARAM_INPUT_FILENAME = "param.input.filename";
+    public static final String PARAM_OUTPUT_FILENAME = "param.output.filename";
+    private String inputFileName;
+    private String outputFileName;
 
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.cropimage);
         mImageView = (CropImageView) findViewById(R.id.image);
-        mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test2).copy(
-                android.graphics.Bitmap.Config.ARGB_8888, true);
+
+        inputFileName = getIntent().getStringExtra(PARAM_INPUT_FILENAME);
+        outputFileName = getIntent().getStringExtra(PARAM_OUTPUT_FILENAME);
+        if (TextUtils.isEmpty(inputFileName) || TextUtils.isEmpty(outputFileName)) {
+            ToastUtils.displayTextShort(this, "输入或者输出文件地址不能为空");
+            finish();
+        }
+
+        try {
+            mBitmap = BitmapDecoder.decodeSampledBitmapFromFile(Constants.EDIT_PIC_TEMP, 1000, 1000);
+        }
+        catch (OutOfMemoryError e) {
+            // IF OOM
+            finish();
+        }
+
+        // mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test2).copy(
+        // android.graphics.Bitmap.Config.ARGB_8888, true);
         try {
             mHandler.postDelayed(new Runnable() {
                 @Override
@@ -73,7 +94,7 @@ public class CropImage extends Activity {
             }, 100);
         }
         catch (Exception e) {
-            Log.e(TAG, "Failed to load bitmap", e);
+            LogUtils.e("图片加载失败，原因：" + e);
             finish();
         }
 
@@ -91,7 +112,7 @@ public class CropImage extends Activity {
             public void onClick(View v) {
                 if (mCroppedImage == null) {
                     if (mCrop == null) {
-                        ToastUtils.displayTextShort(CropImage.this, "截取区域为空");
+                        ToastUtils.displayTextShort(CropImageActivity.this, "截取区域为空");
                         return;
                     }
 
@@ -120,10 +141,9 @@ public class CropImage extends Activity {
                 // 保存图片，如果耗时考虑起线程保存
                 OutputStream outputStream = null;
                 try {
-                    outputStream = new FileOutputStream(Constants.CROP_PIC_TEMP);
-                    FileUtils.initParentDir(Constants.CROP_PIC_TEMP);
-                    mCroppedImage.compress(mSaveFormat, 75, outputStream);
-                    ToastUtils.displayTextShort(CropImage.this, "图片已经保存到：" + Constants.CROP_PIC_TEMP);
+                    outputStream = new FileOutputStream(outputFileName);
+                    FileUtils.initParentDir(outputFileName);
+                    mCroppedImage.compress(Bitmap.CompressFormat.JPEG, 75, outputStream);
                 }
                 catch (IOException ex) {
                     ex.printStackTrace();
@@ -137,7 +157,9 @@ public class CropImage extends Activity {
                         }
                     }
                 }
-                CropImage.this.finish();
+
+                setResult(RESULT_OK, getIntent());
+                CropImageActivity.this.finish();
             }
         });
     }
