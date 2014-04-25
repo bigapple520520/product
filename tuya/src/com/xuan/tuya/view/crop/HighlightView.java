@@ -157,7 +157,6 @@ public class HighlightView {
                 }
             }
         }
-
     }
 
     float getPaddingTop() {
