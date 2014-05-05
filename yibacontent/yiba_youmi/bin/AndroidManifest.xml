@@ -1,0 +1,70 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.xuan.app.yiba"
+    android:versionCode="4"
+    android:versionName="1.3" >
+    
+    <!-- 有米配置权限 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> 
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+    
+    <!-- 应用本身用到权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="17" />
+
+    <application
+        android:icon="@drawable/app_image"
+        android:label="@string/app_name" >
+        <activity
+            android:name="com.xuan.app.yiba.Main">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <!-- 有米添加必须的组件 -->
+        <activity
+	        android:name="net.youmi.android.AdBrowser"
+	        android:configChanges="keyboard|keyboardHidden|orientation|screenSize"            
+	        android:theme="@android:style/Theme.Light.NoTitleBar" >
+	    </activity>
+	    <service
+	        android:name="net.youmi.android.AdService"
+	        android:exported="false" >
+	    </service>
+	    <service
+    		android:name="net.youmi.android.ExpService"
+    		android:exported="false" >
+		</service>
+	    <receiver 
+	        android:name="net.youmi.android.AdReceiver" >
+	        <intent-filter>
+	            <action android:name="android.intent.action.PACKAGE_ADDED" />
+	            <data android:scheme="package" />
+	        </intent-filter>
+	    </receiver>
+	    
+	    <!-- 配置SmartBanner -->
+     	<activity
+		    android:name="net.youmi.android.SmartBannerActivity"
+		    android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+		    android:theme="@style/Transparent">        
+	    </activity>
+	    <service
+		    android:name="net.youmi.android.SmartBannerService"
+		    android:exported="false">        
+	    </service>
+	    <activity
+            android:name="DiyDemo"
+            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize" >
+        </activity>
+    </application>
+
+</manifest>
