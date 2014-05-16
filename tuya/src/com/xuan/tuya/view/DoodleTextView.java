@@ -11,6 +11,7 @@ import java.util.List;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.util.AttributeSet;
 import android.util.FloatMath;
 import android.view.MotionEvent;
@@ -55,6 +56,9 @@ public class DoodleTextView extends ViewGroup {
     private Bitmap bgBitmap;
 
     private Scroller scroller;
+
+    private int screenWidth = 500;
+    private int screenHeight = 500;
 
     public DoodleTextView(Context context) {
         super(context);
@@ -102,6 +106,13 @@ public class DoodleTextView extends ViewGroup {
             scrollTo(scroller.getCurrX(), scroller.getCurrY());
             invalidate();
         }
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        screenWidth = w;
+        screenHeight = h;
+        super.onSizeChanged(w, h, oldw, oldh);
     }
 
     @Override
@@ -204,7 +215,18 @@ public class DoodleTextView extends ViewGroup {
     public void initBgImageView(Bitmap bitmap) {
         bgImageView = new ImageView(getContext());
         // bgImageView.setBackgroundDrawable(new BitmapDrawable(getResources(), bitmap));
-        this.bgBitmap = bitmap;
+
+        if (bitmap.getWidth() < screenWidth) {
+            // 图片过小，需要放大
+            float radio = screenWidth / (float) bitmap.getWidth();
+            Matrix matrix = new Matrix();
+            matrix.setScale(radio, radio);
+            bgBitmap = Bitmap.createScaledBitmap(bitmap, screenWidth, screenHeight, true);
+        }
+        else {
+            this.bgBitmap = bitmap;
+        }
+
         bgImageView.setImageBitmap(bitmap);
         addView(bgImageView);
     }

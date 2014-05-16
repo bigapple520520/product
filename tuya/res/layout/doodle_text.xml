@@ -24,7 +24,7 @@
 			<TextView
 				android:id="@+id/title"
 		        style="@style/textview_style_0"
-		        android:text="@string/tian_jia_wz"
+		        android:text="@string/shuang_ji_tjwz"
 				android:layout_centerInParent="true"
 				android:layout_marginLeft="130dp" />
 			<Button

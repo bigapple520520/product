@@ -17,4 +17,8 @@
     
     <!-- 画笔大小点的颜色 -->
     <color name="doodle_pen_point">#7a7a7a</color>
+    
+    <!-- btn1 -->
+    <color name="title_color">#6CA6CD</color>
+    <color name="title_color_pressed">#6C7B8B</color>
 </resources>

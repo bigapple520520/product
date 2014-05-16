@@ -28,6 +28,10 @@ public final class R {
         /**  tab字体颜色 
          */
         public static final int doodle_tab_text=0x7f040000;
+        /**  btn1 
+         */
+        public static final int title_color=0x7f040009;
+        public static final int title_color_pressed=0x7f04000a;
     }
     public static final class dimen {
         public static final int padding_large=0x7f050002;
@@ -37,61 +41,62 @@ public final class R {
     public static final class drawable {
         public static final int bg_imgedit=0x7f020000;
         public static final int bg_imgedit_sel=0x7f020001;
-        public static final int btn_back=0x7f020002;
-        public static final int btn_back_normal=0x7f020003;
-        public static final int btn_back_pressed=0x7f020004;
-        public static final int btn_top=0x7f020005;
-        public static final int btn_top_normal=0x7f020006;
-        public static final int btn_top_pressed=0x7f020007;
-        public static final int camera_crop_height=0x7f020008;
-        public static final int camera_crop_width=0x7f020009;
-        public static final int header_bg=0x7f02000a;
-        public static final int icon_imgedit_color=0x7f02000b;
-        public static final int icon_imgedit_color_normal=0x7f02000c;
-        public static final int icon_imgedit_color_sel=0x7f02000d;
-        public static final int icon_imgedit_graffiti_sel=0x7f02000e;
-        public static final int icon_imgedit_size=0x7f02000f;
-        public static final int icon_imgedit_size_normal=0x7f020010;
-        public static final int icon_imgedit_size_sel=0x7f020011;
-        public static final int indicator_autocrop=0x7f020012;
-        public static final int line_imgedit=0x7f020013;
-        public static final int tab_bg=0x7f020014;
-        public static final int tabbtn0_imgedit=0x7f020015;
-        public static final int tabbtn0_imgedit_normal=0x7f020016;
-        public static final int tabbtn0_imgedit_sel=0x7f020017;
-        public static final int tabbtn1_imgedit=0x7f020018;
-        public static final int tabbtn1_imgedit_normal=0x7f020019;
-        public static final int tabbtn1_imgedit_sel=0x7f02001a;
-        public static final int tabbtn2_imgedit=0x7f02001b;
-        public static final int tabbtn2_imgedit_normal=0x7f02001c;
-        public static final int tabbtn2_imgedit_sel=0x7f02001d;
-        public static final int tabbtn3_imgedit=0x7f02001e;
-        public static final int tabbtn3_imgedit_normal=0x7f02001f;
-        public static final int tabbtn3_imgedit_sel=0x7f020020;
-        public static final int tabbtn4_imgedit=0x7f020021;
-        public static final int tabbtn4_imgedit_normal=0x7f020022;
-        public static final int tabbtn4_imgedit_sel=0x7f020023;
-        public static final int tabbtn5_imgedit_normal=0x7f020024;
-        public static final int tabbtn5_imgedit_sel=0x7f020025;
-        public static final int tabbtn6_imgedit=0x7f020026;
-        public static final int tabbtn6_imgedit_normal=0x7f020027;
-        public static final int tabbtn6_imgedit_sel=0x7f020028;
-        public static final int tabbtn7_imgedit=0x7f020029;
-        public static final int tabbtn7_imgedit_normal=0x7f02002a;
-        public static final int tabbtn7_imgedit_sel=0x7f02002b;
-        public static final int test=0x7f02002c;
-        public static final int test2=0x7f02002d;
-        public static final int wz_close=0x7f02002e;
-        public static final int wz_close_normal=0x7f02002f;
-        public static final int wz_close_sel=0x7f020030;
-        public static final int wz_fdtd=0x7f020031;
-        public static final int wz_fdtd_normal=0x7f020032;
-        public static final int wz_fdtd_sel=0x7f020033;
-        public static final int wz_wzsr=0x7f020034;
+        public static final int btn1=0x7f020002;
+        public static final int btn_back=0x7f020003;
+        public static final int btn_back_normal=0x7f020004;
+        public static final int btn_back_pressed=0x7f020005;
+        public static final int btn_top=0x7f020006;
+        public static final int btn_top_normal=0x7f020007;
+        public static final int btn_top_pressed=0x7f020008;
+        public static final int camera_crop_height=0x7f020009;
+        public static final int camera_crop_width=0x7f02000a;
+        public static final int header_bg=0x7f02000b;
+        public static final int icon_imgedit_color=0x7f02000c;
+        public static final int icon_imgedit_color_normal=0x7f02000d;
+        public static final int icon_imgedit_color_sel=0x7f02000e;
+        public static final int icon_imgedit_graffiti_sel=0x7f02000f;
+        public static final int icon_imgedit_size=0x7f020010;
+        public static final int icon_imgedit_size_normal=0x7f020011;
+        public static final int icon_imgedit_size_sel=0x7f020012;
+        public static final int indicator_autocrop=0x7f020013;
+        public static final int line_imgedit=0x7f020014;
+        public static final int tab_bg=0x7f020015;
+        public static final int tabbtn0_imgedit=0x7f020016;
+        public static final int tabbtn0_imgedit_normal=0x7f020017;
+        public static final int tabbtn0_imgedit_sel=0x7f020018;
+        public static final int tabbtn1_imgedit=0x7f020019;
+        public static final int tabbtn1_imgedit_normal=0x7f02001a;
+        public static final int tabbtn1_imgedit_sel=0x7f02001b;
+        public static final int tabbtn2_imgedit=0x7f02001c;
+        public static final int tabbtn2_imgedit_normal=0x7f02001d;
+        public static final int tabbtn2_imgedit_sel=0x7f02001e;
+        public static final int tabbtn3_imgedit=0x7f02001f;
+        public static final int tabbtn3_imgedit_normal=0x7f020020;
+        public static final int tabbtn3_imgedit_sel=0x7f020021;
+        public static final int tabbtn4_imgedit=0x7f020022;
+        public static final int tabbtn4_imgedit_normal=0x7f020023;
+        public static final int tabbtn4_imgedit_sel=0x7f020024;
+        public static final int tabbtn5_imgedit_normal=0x7f020025;
+        public static final int tabbtn5_imgedit_sel=0x7f020026;
+        public static final int tabbtn6_imgedit=0x7f020027;
+        public static final int tabbtn6_imgedit_normal=0x7f020028;
+        public static final int tabbtn6_imgedit_sel=0x7f020029;
+        public static final int tabbtn7_imgedit=0x7f02002a;
+        public static final int tabbtn7_imgedit_normal=0x7f02002b;
+        public static final int tabbtn7_imgedit_sel=0x7f02002c;
+        public static final int test=0x7f02002d;
+        public static final int test2=0x7f02002e;
+        public static final int wz_close=0x7f02002f;
+        public static final int wz_close_normal=0x7f020030;
+        public static final int wz_close_sel=0x7f020031;
+        public static final int wz_fdtd=0x7f020032;
+        public static final int wz_fdtd_normal=0x7f020033;
+        public static final int wz_fdtd_sel=0x7f020034;
+        public static final int wz_wzsr=0x7f020035;
     }
     public static final class id {
-        public static final int button1=0x7f08002d;
-        public static final int button2=0x7f08002e;
+        public static final int button1=0x7f08002e;
+        public static final int button2=0x7f08002f;
         public static final int color1=0x7f08000a;
         public static final int color1Layout=0x7f080009;
         public static final int color2=0x7f08000c;
@@ -107,7 +112,7 @@ public final class R {
         public static final int doodleLayout=0x7f080005;
         public static final int frameHead=0x7f080000;
         public static final int image=0x7f080004;
-        public static final int imageView=0x7f080030;
+        public static final int imageView=0x7f08002d;
         public static final int operateLayout=0x7f08001d;
         public static final int penBack=0x7f080021;
         public static final int penBtn=0x7f080020;
@@ -137,7 +142,7 @@ public final class R {
         public static final int tab4=0x7f08002c;
         public static final int tab4Layout=0x7f08002b;
         public static final int tabs=0x7f080022;
-        public static final int textView=0x7f08002f;
+        public static final int textView=0x7f080030;
         public static final int title=0x7f080002;
     }
     public static final class layout {
@@ -150,27 +155,28 @@ public final class R {
     public static final class string {
         public static final int app_name=0x7f060000;
         public static final int bao_cun=0x7f060001;
-        public static final int button0_text=0x7f060014;
-        public static final int button1_text=0x7f060015;
-        public static final int button2_text=0x7f060016;
-        public static final int cai_jian_tp=0x7f06000d;
-        public static final int chong_zhi=0x7f06000e;
+        public static final int button0_text=0x7f060015;
+        public static final int button1_text=0x7f060016;
+        public static final int button2_text=0x7f060017;
+        public static final int cai_jian_tp=0x7f06000e;
+        public static final int chong_zhi=0x7f06000f;
         public static final int cong_xiao_cxz=0x7f060007;
         public static final int fan_hui=0x7f060008;
-        public static final int jian_qie=0x7f060010;
+        public static final int jian_qie=0x7f060011;
         public static final int menu_settings=0x7f060004;
         public static final int no_word=0x7f060003;
         public static final int pai_zhao=0x7f060006;
         public static final int qu_xiao=0x7f060005;
         public static final int que_ding=0x7f060009;
+        public static final int shuang_ji_tjwz=0x7f06000c;
         public static final int tian_jia_wz=0x7f06000b;
         public static final int tu_pian=0x7f060002;
         public static final int tu_pian_bj=0x7f06000a;
-        public static final int tu_ya=0x7f060011;
-        public static final int tu_ya_tp=0x7f06000c;
-        public static final int wan_cheng=0x7f060013;
-        public static final int wen_zi=0x7f060012;
-        public static final int xuan_zhuan=0x7f06000f;
+        public static final int tu_ya=0x7f060012;
+        public static final int tu_ya_tp=0x7f06000d;
+        public static final int wan_cheng=0x7f060014;
+        public static final int wen_zi=0x7f060013;
+        public static final int xuan_zhuan=0x7f060010;
     }
     public static final class style {
         /** 

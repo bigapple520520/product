@@ -110,7 +110,7 @@ public class TestActivity extends BasicActivity {
     private void initBitmap() {
         File file = new File(Constants.EDIT_PIC);
         if (file.exists()) {
-            textView.setText("处理好的图片路径：" + Constants.EDIT_PIC);
+            textView.setText("注意：编辑好的图片存放在下面这个文件夹下，你自己去取吧。\n" + Constants.PIC_STORE_PATH);
             Bitmap bitmap = BitmapDecoder.decodeSampledBitmapFromFile(Constants.EDIT_PIC, 1000, 1000);
             imageView.setImageBitmap(bitmap);
         }

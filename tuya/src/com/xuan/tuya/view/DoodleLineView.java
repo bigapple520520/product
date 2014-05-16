@@ -6,6 +6,7 @@ import java.util.List;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
@@ -90,7 +91,17 @@ public class DoodleLineView extends View {
      * @param bgPicBitmap
      */
     public void initBgPicBitmap(Bitmap bgPicBitmap) {
-        this.mBgPicBitmap = bgPicBitmap;
+        if (bgPicBitmap.getWidth() < screenWidth) {
+            // 图片过小，需要放大
+            float radio = (float) screenWidth / (float) bgPicBitmap.getWidth();
+            Matrix matrix = new Matrix();
+            matrix.setScale(radio, radio);
+            this.mBgPicBitmap = Bitmap.createScaledBitmap(bgPicBitmap, screenWidth, screenHeight, true);
+        }
+        else {
+            this.mBgPicBitmap = bgPicBitmap;
+        }
+
         savePath.clear();
         redrawOnBitmap();
     }
@@ -140,13 +151,7 @@ public class DoodleLineView extends View {
         }
         else {
             mBitmap = mBgPicBitmap.copy(Bitmap.Config.ARGB_8888, true);
-            // if (mBitmap.getWidth() < screenWidth) {
-            // // 图片过小，需要放大
-            // float radio = (float) screenWidth / (float) mBitmap.getWidth();
-            // Matrix matrix = new Matrix();
-            // matrix.setScale(radio, radio);
-            // mBitmap = Bitmap.createScaledBitmap(mBgPicBitmap, screenWidth, screenHeight, true);
-            // }
+
             mCanvas.setBitmap(mBitmap);
         }
 
