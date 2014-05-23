@@ -1,6 +1,7 @@
 package com.xuan.app.yiba;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.app.Activity;
@@ -22,6 +23,9 @@ import android.widget.Toast;
 
 import com.feiwoone.banner.AdBanner;
 import com.feiwoone.banner.RecevieAdListener;
+import com.winupon.andframe.bigapple.utils.HttpUtils;
+import com.winupon.andframe.bigapple.utils.Validators;
+import com.winupon.andframe.bigapple.utils.sharepreference.PreferenceModel;
 import com.xuan.app.yiba.slidingupdown.SlidingUpDown;
 import com.xuan.app.yiba.slidingupdown.SlidingUpDown.OpenPercentListener;
 import com.xuan.app.yiba.utils.Utils;
@@ -53,6 +57,9 @@ public class Main extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
+
+        // 第一次安装通知服务器
+        count();
 
         // 上下滑动
         initSliding();
@@ -201,6 +208,30 @@ public class Main extends Activity {
             }
         };
         adBanner.setRecevieAdListener(adListener);
+    }
+
+    // 第一次安装通知服务器
+    private void count() {
+        try {
+            boolean isUpLoad = PreferenceModel.instance(this).getBoolean("is.upload", false);
+            if (!isUpLoad) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        HashMap<String, String> map = new HashMap<String, String>();
+                        map.put("key", "xuan15858178400");
+                        map.put("apk", "yiba");
+                        String message = HttpUtils.requestURLPost("http://blog.xuanner.com/apk-count/up.php", map);
+                        if (!Validators.isEmpty(message) && "1".equals(message.trim().substring(1))) {
+                            PreferenceModel.instance(Main.this).putBoolean("is.upload", true);
+                        }
+                    }
+                }).start();
+            }
+        }
+        catch (Exception e) {
+            // Ignore
+        }
     }
 
 }
