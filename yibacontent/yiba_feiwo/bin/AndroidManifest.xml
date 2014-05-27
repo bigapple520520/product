@@ -11,7 +11,7 @@
     
     <!-- 应用本身用到权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> -->
 
     <uses-sdk
         android:minSdkVersion="8"

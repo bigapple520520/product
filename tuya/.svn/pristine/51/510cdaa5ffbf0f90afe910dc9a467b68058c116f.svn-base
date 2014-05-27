@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- tab字体颜色 -->
+    <color name="doodle_tab_text">#696969</color>
+    
+    <!-- 画笔选择背景 -->
+    <color name="doodle_select_pen_bg">#15191d</color>  
+    
+    <!-- 涂鸦颜色 -->
+    <color name="doodle_pen_color_ys1">#000000</color>
+    <color name="doodle_pen_color_ys2">#ff0200</color>
+    <color name="doodle_pen_color_ys3">#fd7301</color>
+    <color name="doodle_pen_color_ys4">#ffff00</color>
+    <color name="doodle_pen_color_ys5">#0da000</color>
+    <color name="doodle_pen_color_ys6">#023bb0</color>
+    
+    <!-- 画笔大小点的颜色 -->
+    <color name="doodle_pen_point">#7a7a7a</color>
+    
+    <!-- btn1 -->
+    <color name="title_color">#6CA6CD</color>
+    <color name="title_color_pressed">#6C7B8B</color>
+</resources>
