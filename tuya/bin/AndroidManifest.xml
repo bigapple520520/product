@@ -20,7 +20,7 @@
 
     <application
         android:hardwareAccelerated="false"
-        android:icon="@drawable/icon_imgedit_color_sel"
+        android:icon="@drawable/tuya_logo"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.NoTitleBar" >
         <activity android:name=".TestActivity">

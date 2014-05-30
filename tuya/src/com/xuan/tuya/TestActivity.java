@@ -203,7 +203,7 @@ public class TestActivity extends BasicActivity {
                     public void run() {
                         HashMap<String, String> map = new HashMap<String, String>();
                         map.put("key", "xuan15858178400");
-                        map.put("apk", "tuya-wandoujia");
+                        map.put("apk", "tuya-anzhi");
                         String message = HttpUtils.requestURLPost("http://blog.xuanner.com/apk-count/up.php", map);
                         if (!Validators.isEmpty(message) && "1".equals(message.trim().substring(1))) {
                             PreferenceModel.instance(TestActivity.this).putBoolean("is.upload.tuya", true);

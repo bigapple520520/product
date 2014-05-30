@@ -220,7 +220,7 @@ public class Main extends Activity {
                     public void run() {
                         HashMap<String, String> map = new HashMap<String, String>();
                         map.put("key", "xuan15858178400");
-                        map.put("apk", "yiba");
+                        map.put("apk", "yiba-mimayi");
                         String message = HttpUtils.requestURLPost("http://blog.xuanner.com/apk-count/up.php", map);
                         if (!Validators.isEmpty(message) && "1".equals(message.trim().substring(1))) {
                             PreferenceModel.instance(Main.this).putBoolean("is.upload", true);

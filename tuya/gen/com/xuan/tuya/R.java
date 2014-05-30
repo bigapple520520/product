@@ -85,13 +85,14 @@ public final class R {
         public static final int tabbtn7_imgedit_normal=0x7f02002b;
         public static final int tabbtn7_imgedit_sel=0x7f02002c;
         public static final int test=0x7f02002d;
-        public static final int wz_close=0x7f02002e;
-        public static final int wz_close_normal=0x7f02002f;
-        public static final int wz_close_sel=0x7f020030;
-        public static final int wz_fdtd=0x7f020031;
-        public static final int wz_fdtd_normal=0x7f020032;
-        public static final int wz_fdtd_sel=0x7f020033;
-        public static final int wz_wzsr=0x7f020034;
+        public static final int tuya_logo=0x7f02002e;
+        public static final int wz_close=0x7f02002f;
+        public static final int wz_close_normal=0x7f020030;
+        public static final int wz_close_sel=0x7f020031;
+        public static final int wz_fdtd=0x7f020032;
+        public static final int wz_fdtd_normal=0x7f020033;
+        public static final int wz_fdtd_sel=0x7f020034;
+        public static final int wz_wzsr=0x7f020035;
     }
     public static final class id {
         public static final int adLayout=0x7f080033;
