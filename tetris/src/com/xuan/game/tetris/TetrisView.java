@@ -14,32 +14,38 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
+/**
+ * 游戏画布
+ * 
+ * @author xuan
+ * @version $Revision: 1.0 $, $Date: 2014-5-30 下午5:52:00 $
+ */
 public class TetrisView extends View implements Runnable {
-    final static int SCREEN_WIDTH = 320;
-    final static int SCREEN_HEIGHT = 455;
+    public static final String TAG = "TetrisView";
 
-    final int STATE_MENU = 0;
-    final int STATE_PLAY = 1;
-    final int STATE_PAUSE = 2;
-    final int STATE_OVER = 3;
+    public final static int SCREEN_WIDTH = 320;
+    public final static int SCREEN_HEIGHT = 455;
+
+    public final int STATE_MENU = 0;
+    public final int STATE_PLAY = 1;
+    public final int STATE_PAUSE = 2;
+    public final int STATE_OVER = 3;
+    private int gamestate = STATE_PLAY;// 游戏的运行状态
 
     public static final int MAX_LEVEL = 6;
 
-    public static final String TAG = "TetrisView";
     public static final String DATAFILE = "save.dt";
-
-    int gamestate = STATE_PLAY;
 
     int score = 0;
     int speed = 1;
     int deLine = 0;
 
-    boolean isCombo = false;
+    private boolean isCombo = false;// 判断是否落地
     boolean isPaused = false;
     boolean isVoice = true;
 
-    long moveDelay = 600;
-    long lastMove = 0;
+    private long moveDelay = 600;// 每移动的时间
+    private long lastMove = 0;
 
     private final Paint paint = new Paint();
 
@@ -57,14 +63,14 @@ public class TetrisView extends View implements Runnable {
         init();
     }
 
+    // 游戏初始化
     private void init() {
         currentTile = new TileView(getContext());
-
         nextTile = new TileView(getContext());
+
         court = new Court(getContext());
         refreshHandler = new RefreshHandler(this);
         resourceStore = new ResourceStore(getContext());
-
         musicPlayer = new MusicPlayer(getContext());
 
         setLevel(1);
@@ -73,10 +79,12 @@ public class TetrisView extends View implements Runnable {
         paint.setColor(Color.RED);
 
         setFocusable(true);
-
         new Thread(this).start();
     }
 
+    /**
+     * 每次操作
+     */
     public void logic() {
         switch (gamestate) {
         case STATE_MENU:
@@ -93,7 +101,7 @@ public class TetrisView extends View implements Runnable {
     }
 
     /**
-     * 启动游戏
+     * 初始化关卡，启动游戏
      */
     public void startGame() {
         gamestate = STATE_PLAY;
@@ -111,7 +119,7 @@ public class TetrisView extends View implements Runnable {
     }
 
     /**
-     * 启动游戏
+     * 每次游戏步骤
      */
     public void playGame() {
         long now = System.currentTimeMillis();
@@ -140,8 +148,8 @@ public class TetrisView extends View implements Runnable {
 
                 isCombo = false;
             }
-            moveDown();
 
+            moveDown();
             lastMove = now;
         }
     }
@@ -302,7 +310,6 @@ public class TetrisView extends View implements Runnable {
     }
 
     private void rotate() {
-        // check
         if (!isCombo) {
             currentTile.rotateOnCourt(court);
         }
@@ -428,6 +435,7 @@ public class TetrisView extends View implements Runnable {
             Message message = new Message();
             message.what = RefreshHandler.MESSAGE_REFRESH;
             refreshHandler.sendMessage(message);
+
             try {
                 Thread.sleep(moveDelay);
             }
@@ -564,4 +572,5 @@ public class TetrisView extends View implements Runnable {
     public void freeResources() {
         musicPlayer.free();
     }
+
 }

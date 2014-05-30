@@ -127,6 +127,12 @@ public class TileView {
         return true;
     }
 
+    /**
+     * 方块下移，在指定court容器内
+     * 
+     * @param court
+     * @return
+     */
     public boolean moveDownOnCourt(Court court) {
         int i, j;
         for (i = 0; i < 4; i++) {

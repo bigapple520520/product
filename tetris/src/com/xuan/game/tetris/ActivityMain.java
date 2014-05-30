@@ -80,11 +80,7 @@ public class ActivityMain extends Activity {
                 startActivity(intent);
                 return;
             }
-            if (v == btHelp) {
-                Intent intent = new Intent(ActivityMain.this, ActivityHelp.class);
-                startActivity(intent);
-                return;
-            }
+
             if (v == btRank) {
                 Intent intent = new Intent(ActivityMain.this, ActivityRank.class);
                 startActivity(intent);

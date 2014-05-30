@@ -21,7 +21,7 @@ public class ActivityGame extends Activity {
         Intent intent = getIntent();
 
         // 设置游戏的难度级别
-        int level = getIntent().getIntExtra(ActivityMain.LEVEL, 1);
+        int level = intent.getIntExtra(ActivityMain.LEVEL, 1);
         tetrisView.setLevel(level);
 
         // 判断是否从上次游戏开始

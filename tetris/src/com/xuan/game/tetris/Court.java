@@ -45,6 +45,7 @@ public class Court {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -52,12 +53,15 @@ public class Court {
         if (posX < 0 || posX >= COURT_WIDTH) {
             return false;
         }
+
         if (posY < 0 || posY >= COURT_HEIGHT) {
             return false;
         }
+
         if (0 == mCourt[posX][posY]) {
             return true;
         }
+
         return false;
     }
 
@@ -144,18 +148,6 @@ public class Court {
             }
         }
         return result;
-    }
-
-    private void removeSingleLine(int lineIndex, int time) {
-        int t, i, j;
-        for (t = 0; t < time; t++) {
-            for (i = lineIndex; i > 0; i--) {
-                for (j = 0; j < COURT_WIDTH; j++) {
-                    mCourt[j][i] = mCourt[j][i - 1];
-                }
-            }
-
-        }
     }
 
     public void paintCourt(Canvas canvas) {

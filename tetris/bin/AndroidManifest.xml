@@ -20,7 +20,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name = ".ActivityHelp" />
         <activity android:name = ".ActivityRank" />
         <activity android:name = ".ActivityGame" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"/>
     </application>

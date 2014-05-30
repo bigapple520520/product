@@ -10,9 +10,9 @@ import android.os.Message;
  * @version $Revision: 1.0 $, $Date: 2014-1-14 下午6:34:26 $
  */
 public class RefreshHandler extends Handler {
-    final static int MESSAGE_REFRESH = 0xeeeeeeee;
+    public final static int MESSAGE_REFRESH = 1;
+    public final static int DELAY_MILLIS = 100;
 
-    final static int DELAY_MILLIS = 100;
     TetrisView tetrisView = null;
     boolean isPaused = false;
 
