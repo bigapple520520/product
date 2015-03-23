@@ -20,12 +20,26 @@ import android.net.NetworkInfo;
 import android.os.Handler;
 import android.text.TextUtils;
 
+import com.umeng.analytics.MobclickAgent;
+import com.winupon.andframe.bigapple.utils.log.LogUtils;
+import com.xuan.app.yiba.AppApplication;
+
 /**
  * 工具类
  * 
  * @author xuan
  */
 public abstract class Utils {
+
+    public static void logE(Exception e) {
+        LogUtils.e(e.getMessage(), e);
+        MobclickAgent.reportError(AppApplication.instance, e);
+    }
+
+    public static void logE(String error) {
+        LogUtils.e(error);
+        MobclickAgent.reportError(AppApplication.instance, error);
+    }
 
     /**
      * 判断网络
@@ -154,7 +168,8 @@ public abstract class Utils {
             resultTemp = Utils.requestURL(url);
         }
         catch (Exception e) {
-            // Ignore
+            logE(e);
+            return "小译译有点晕，请再给我一个机会，走一个~";
         }
 
         // 从Json串中解析出译文
@@ -173,7 +188,8 @@ public abstract class Utils {
             }
         }
         catch (Exception e) {
-            result = "不好意思出错了，请联系我的主人：15858178400";
+            result = "貌似返回格式错了，请升级一下小译译呗~";
+            logE(e);
         }
 
         return result;
